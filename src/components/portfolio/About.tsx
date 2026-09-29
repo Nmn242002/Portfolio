@@ -44,11 +44,11 @@ export function About() {
 
       <div className="mt-10 max-w-[720px] space-y-6">
         <AnimatedText
-          className="text-center font-medium leading-relaxed text-film"
+          className="text-center text-[clamp(1rem,2vw,1.35rem)] font-medium leading-relaxed text-film"
           text="I’m Naman Jain, an AI filmmaker and visual creator with around 6 months of professional experience at Physics Wallah. I create AI-generated images and videos, develop cinematic visual concepts, and edit AI-generated footage into engaging visual stories."
         />
         <AnimatedText
-          className="text-center font-medium leading-relaxed text-muted-foreground"
+          className="text-center text-[clamp(1rem,2vw,1.35rem)] font-medium leading-relaxed text-muted-foreground"
           text="My work focuses on combining generative AI with creative storytelling and video editing to turn ideas into cinematic visuals."
         />
       </div>
