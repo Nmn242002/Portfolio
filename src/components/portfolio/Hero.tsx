@@ -36,7 +36,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-          className="hero-heading mt-6 w-full whitespace-nowrap px-4 text-center text-[14vw] font-black uppercase leading-none tracking-tight sm:mt-4 sm:text-[15vw] md:-mt-5 md:text-[16vw] lg:text-[17.5vw]"
+          className="hero-heading mt-6 w-full whitespace-nowrap px-4 text-center text-[11.5vw] font-black uppercase leading-none tracking-tight sm:mt-4 sm:text-[12vw] md:-mt-5 md:text-[12.4vw]"
         >
           Hi, i&apos;m Naman
         </motion.h1>
