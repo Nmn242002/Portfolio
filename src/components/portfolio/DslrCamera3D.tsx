@@ -52,15 +52,19 @@ function Lens() {
       {/* inner barrel */}
       <Cyl r={0.82} l={0.3} z={1.7} color="#050505" rough={1} metal={0} />
       {/* glass elements */}
-      <mesh position={[0, 0, 1.62]} scale={[1, 1, 0.35]}>
+      <mesh position={[0, 0, 1.52]}>
+        <circleGeometry args={[0.83, 64]} />
+        <meshStandardMaterial color="#020202" roughness={1} />
+      </mesh>
+      <mesh position={[0, 0, 1.53]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.3, 1]}>
         <sphereGeometry args={[0.8, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshPhysicalMaterial color="#1a2a3a" roughness={0.02} metalness={0.2} clearcoat={1} clearcoatRoughness={0} iridescence={1} iridescenceIOR={1.8} envMapIntensity={2.5} />
       </mesh>
-      <mesh position={[0, 0, 1.5]}>
+      <mesh position={[0, 0, 1.6]}>
         <circleGeometry args={[0.45, 48]} />
         <meshStandardMaterial color="#3a1a5a" metalness={1} roughness={0.1} />
       </mesh>
-      <mesh position={[0, 0, 1.51]}>
+      <mesh position={[0, 0, 1.61]}>
         <ringGeometry args={[0.2, 0.26, 48]} />
         <meshStandardMaterial color="#6fa8ff" emissive="#20406a" metalness={1} roughness={0.05} />
       </mesh>
@@ -89,8 +93,8 @@ function Dslr() {
         <meshStandardMaterial color={BODY} roughness={0.55} metalness={0.2} />
       </RoundedBox>
       {/* pentaprism hump */}
-      <mesh position={[0.15, 1.3, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
-        <cylinderGeometry args={[0.55, 0.85, 0.95, 4, 1]} />
+      <mesh position={[0.15, 1.45, 0]} rotation={[0, Math.PI / 4, 0]} scale={[1.1, 1, 0.75]}>
+        <cylinderGeometry args={[0.4, 0.85, 0.55, 4, 1]} />
         <meshStandardMaterial color={BODY} roughness={0.5} metalness={0.25} flatShading />
       </mesh>
       <RoundedBox args={[1.3, 0.35, 1.0]} radius={0.1} position={[0.15, 1.1, 0]}>
