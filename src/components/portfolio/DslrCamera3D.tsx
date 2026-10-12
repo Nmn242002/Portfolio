@@ -35,7 +35,7 @@ function CameraModel() {
   });
 
   return h("group", { ref }, h(Center, null, h("primitive", { object: scene, scale })));
-}}
+}
 
 // yaw that points the lens toward the viewer
 const LENS_YAW = 0;
