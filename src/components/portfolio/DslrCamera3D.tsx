@@ -9,8 +9,9 @@ function CameraModel() {
   const { scene } = useGLTF(URL);
   const ref = useRef<THREE.Group>(null);
   const scale = useMemo(() => {
-    const strap = scene.getObjectByName("Camera_01_strap");
-    if (strap) strap.visible = false;
+    scene.traverse((o) => {
+      if (/strap/i.test(o.name) || /strap/i.test(((o as THREE.Mesh).material as THREE.Material | undefined)?.name ?? "")) o.visible = false;
+    });
     const body = scene.getObjectByName("Camera_01") ?? scene;
     const size = new THREE.Box3().setFromObject(body).getSize(new THREE.Vector3());
     return 4.2 / Math.max(size.x, size.y, size.z);
