@@ -9,8 +9,11 @@ function CameraModel() {
   const { scene } = useGLTF(URL);
   const ref = useRef<THREE.Group>(null);
   const scale = useMemo(() => {
-    const size = new THREE.Box3().setFromObject(scene).getSize(new THREE.Vector3());
-    return 3.6 / Math.max(size.x, size.y, size.z);
+    const strap = scene.getObjectByName("Camera_01_strap");
+    if (strap) strap.visible = false;
+    const body = scene.getObjectByName("Camera_01") ?? scene;
+    const size = new THREE.Box3().setFromObject(body).getSize(new THREE.Vector3());
+    return 4.2 / Math.max(size.x, size.y, size.z);
   }, [scene]);
 
   useFrame((state, delta) => {
@@ -27,7 +30,7 @@ function CameraModel() {
 
   return (
     <group ref={ref}>
-      <Center>
+      <Center precise={false} disableY={false}>
         <primitive object={scene} scale={scale} />
       </Center>
     </group>
