@@ -1,6 +1,11 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Center, ContactShadows, Environment, Lightformer, useGLTF } from "@react-three/drei";
-import { Suspense, useMemo, useRef } from "react";
+import { createElement, Fragment, Suspense, useMemo, useRef } from "react";
+
+// Built with createElement (not JSX) so dev tooling doesn't inject DOM-only
+// attributes onto 3D scene objects, which crashes the 3D renderer.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const h = createElement as any;
 import * as THREE from "three";
 
 const URL = "/models/camera.glb";
@@ -29,14 +34,8 @@ function CameraModel() {
     g.position.y = Math.sin(t * 0.8) * 0.06;
   });
 
-  return (
-    <group ref={ref}>
-      <Center precise={false} disableY={false}>
-        <primitive object={scene} scale={scale} />
-      </Center>
-    </group>
-  );
-}
+  return h("group", { ref }, h(Center, null, h("primitive", { object: scene, scale })));
+}}
 
 // yaw that points the lens toward the viewer
 const LENS_YAW = 0;
@@ -44,20 +43,24 @@ const LENS_YAW = 0;
 export default function DslrCamera3D() {
   return (
     <Canvas dpr={[1, 2]} camera={{ position: [0, 0.5, 7], fov: 35 }} gl={{ alpha: true, antialias: true }}>
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[4, 6, 5]} intensity={2.2} />
-      <pointLight position={[-4, 1, 3]} intensity={25} color="#b600a8" />
-      <pointLight position={[4, -1, 3]} intensity={18} color="#be4c00" />
-      <Environment resolution={256}>
-        <Lightformer intensity={3} position={[0, 5, 2]} scale={[10, 3, 1]} />
-        <Lightformer intensity={1.5} color="#bbccd7" position={[-5, 1, 2]} rotation-y={Math.PI / 2} scale={[10, 2, 1]} />
-        <Lightformer intensity={1.5} color="#7621b0" position={[5, 0, 2]} rotation-y={-Math.PI / 2} scale={[10, 2, 1]} />
-        <Lightformer intensity={2} position={[0, 0, 6]} scale={[4, 4, 1]} form="ring" />
-      </Environment>
-      <Suspense fallback={null}>
-        <CameraModel />
-      </Suspense>
-      <ContactShadows position={[0, -1.6, 0]} opacity={0.6} scale={8} blur={2.5} far={3} />
+      {h(
+        Fragment,
+        null,
+        h("ambientLight", { intensity: 0.4 }),
+        h("directionalLight", { position: [4, 6, 5], intensity: 2.2 }),
+        h("pointLight", { position: [-4, 1, 3], intensity: 25, color: "#b600a8" }),
+        h("pointLight", { position: [4, -1, 3], intensity: 18, color: "#be4c00" }),
+        h(
+          Environment,
+          { resolution: 256 },
+          h(Lightformer, { intensity: 3, position: [0, 5, 2], scale: [10, 3, 1] }),
+          h(Lightformer, { intensity: 1.5, color: "#bbccd7", position: [-5, 1, 2], "rotation-y": Math.PI / 2, scale: [10, 2, 1] }),
+          h(Lightformer, { intensity: 1.5, color: "#7621b0", position: [5, 0, 2], "rotation-y": -Math.PI / 2, scale: [10, 2, 1] }),
+          h(Lightformer, { intensity: 2, position: [0, 0, 6], scale: [4, 4, 1], form: "ring" }),
+        ),
+        h(Suspense, { fallback: null }, h(CameraModel)),
+        h(ContactShadows, { position: [0, -1.6, 0], opacity: 0.6, scale: 8, blur: 2.5, far: 3 }),
+      )}
     </Canvas>
   );
 }
