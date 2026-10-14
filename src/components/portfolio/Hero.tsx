@@ -12,12 +12,12 @@ export function Hero() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: EASE }}
-        className="relative z-20 flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8"
+        className="relative z-20 flex flex-col items-start justify-between gap-3 px-6 pt-6 sm:flex-row sm:items-center md:px-10 md:pt-8"
       >
         <span className="text-sm font-medium uppercase tracking-wider text-film md:text-lg lg:text-[1.2rem]">
           Naman
         </span>
-        <div className="flex gap-4 sm:gap-6 md:gap-8">
+        <div className="flex w-full justify-between gap-3 sm:w-auto sm:gap-6 md:gap-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -49,7 +49,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
-          className="max-w-[250px] sm:max-w-[300px] md:max-w-[340px]"
+          className="min-w-0 max-w-[250px] sm:max-w-[300px] md:max-w-[340px]"
         >
           <p
             className="font-light uppercase leading-snug tracking-wide text-film"
@@ -66,6 +66,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
+          className="shrink-0 whitespace-nowrap"
         >
           <ContactButton />
         </motion.div>
