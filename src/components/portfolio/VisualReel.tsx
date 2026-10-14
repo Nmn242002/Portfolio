@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "./primitives";
 import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
-import { loopPosition } from "./reel-loop";
+import { autoplayDelta, loopPosition } from "./reel-loop";
 
 export function VisualReel() {
   return (
@@ -25,7 +25,8 @@ export function VisualReel() {
 function ReelRow({ images, direction, label }: { images: ReelImage[]; direction: number; label: string }) {
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  const interacting = useRef(false);
+  const hovered = useRef(false);
+  const focused = useRef(false);
   const drag = useRef<{ x: number; position: number } | null>(null);
 
   useEffect(() => {
@@ -45,11 +46,12 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
     };
     let previousY = window.scrollY;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isPaused = () => hovered.current || focused.current || drag.current !== null;
     const pageScroll = () => {
       const delta = window.scrollY - previousY;
       previousY = window.scrollY;
       const box = el.getBoundingClientRect();
-      if (!reduced.matches && !interacting.current && box.bottom > 0 && box.top < window.innerHeight) {
+      if (!reduced.matches && !isPaused() && box.bottom > 0 && box.top < window.innerHeight) {
         el.scrollLeft = loopPosition(el.scrollLeft + delta * 0.35 * direction, cycle);
       }
     };
@@ -59,6 +61,15 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
       el.scrollLeft = loopPosition(el.scrollLeft + delta * (event.deltaMode === 1 ? 16 : 1), cycle);
     };
+    let animationFrame = 0;
+    let previousTime = performance.now();
+    const animate = (time: number) => {
+      const delta = autoplayDelta(time - previousTime, 24, direction, isPaused(), reduced.matches);
+      previousTime = time;
+      if (delta !== 0) el.scrollLeft = loopPosition(el.scrollLeft + delta, cycle);
+      animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
     el.addEventListener("scroll", normalize, { passive: true });
     el.addEventListener("wheel", wheel, { passive: false });
     window.addEventListener("scroll", pageScroll, { passive: true });
@@ -67,6 +78,7 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
       el.removeEventListener("scroll", normalize);
       el.removeEventListener("wheel", wheel);
       window.removeEventListener("scroll", pageScroll);
+      cancelAnimationFrame(animationFrame);
     };
   }, [direction]);
 
@@ -90,10 +102,10 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
         role="region"
         aria-label={`${label} frames`}
         className="reel-viewport cursor-grab overflow-x-auto overscroll-x-contain focus-visible:outline focus-visible:outline-ring active:cursor-grabbing"
-        onMouseEnter={() => { interacting.current = true; }}
-        onMouseLeave={() => { if (!drag.current) interacting.current = false; }}
-        onFocus={() => { interacting.current = true; }}
-        onBlur={() => { interacting.current = false; }}
+        onMouseEnter={() => { hovered.current = true; }}
+        onMouseLeave={() => { hovered.current = false; }}
+        onFocus={() => { focused.current = true; }}
+        onBlur={() => { focused.current = false; }}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
@@ -106,7 +118,6 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
           if (!el) return;
           el.setPointerCapture(event.pointerId);
           drag.current = { x: event.clientX, position: el.scrollLeft };
-          interacting.current = true;
         }}
         onPointerMove={(event) => {
           const el = viewport.current;
@@ -115,8 +126,8 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
           if (!el || !content || !start) return;
           el.scrollLeft = loopPosition(start.position + start.x - event.clientX, content.scrollWidth / 3);
         }}
-        onPointerUp={() => { drag.current = null; interacting.current = false; }}
-        onPointerCancel={() => { drag.current = null; interacting.current = false; }}
+        onPointerUp={() => { drag.current = null; }}
+        onPointerCancel={() => { drag.current = null; }}
       >
         <div ref={track} className="flex w-max gap-3 pr-3">
           {[0, 1, 2].flatMap((copy) => images.map((image, index) => (
