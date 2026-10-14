@@ -1,17 +1,13 @@
 import { motion } from "framer-motion";
-import { lazy, Suspense, useEffect, useState } from "react";
 
 import { ContactButton } from "./primitives";
 import { navLinks } from "./data";
 
-const DslrCamera3D = lazy(() => import("./DslrCamera3D"));
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 export function Hero() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
   return (
-    <section className="relative flex h-screen flex-col overflow-x-clip">
+    <section className="relative flex min-h-[82svh] flex-col overflow-x-clip">
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -39,24 +35,14 @@ export function Hero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-          className="hero-heading mt-6 w-full whitespace-nowrap px-4 text-center text-[11.5vw] font-black uppercase leading-none tracking-tight sm:mt-4 sm:text-[12vw] md:-mt-5 md:text-[12.4vw]"
+          className="hero-heading mt-6 w-full whitespace-nowrap px-4 text-center text-[38px] font-black uppercase leading-none tracking-tight sm:mt-4 sm:text-[72px] md:-mt-5 md:text-[100px] lg:text-[140px]"
         >
           Hi, i&apos;m Naman
         </motion.h1>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.6, ease: EASE }}
-        className="absolute left-1/2 top-1/2 z-10 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 sm:bottom-0 sm:top-auto sm:h-[420px] sm:w-[520px] sm:translate-y-0 md:h-[500px] md:w-[640px] lg:h-[560px] lg:w-[760px]"
-      >
-        {mounted && (
-          <Suspense fallback={null}>
-            <DslrCamera3D />
-          </Suspense>
-        )}
-      </motion.div>
+      {/* Reserved for Naman's supplied hair-to-chest portrait, centered independently of the footer. */}
+      <div data-portrait-slot aria-hidden="true" className="relative mx-auto min-h-[240px] w-full max-w-[560px] flex-1 sm:min-h-[320px]" />
 
       <div className="relative z-20 mt-auto flex items-end justify-between gap-4 px-6 pb-8 md:px-10 md:pb-10">
         <motion.div

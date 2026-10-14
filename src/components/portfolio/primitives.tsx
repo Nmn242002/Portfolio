@@ -95,7 +95,7 @@ export function AnimatedText({ text, className }: { text: string; className?: st
   const ref = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.8", "end 0.2"],
+    offset: ["start 1", "end 0.65"],
   });
   const words = text.split(" ");
 

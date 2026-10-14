@@ -1,7 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
-
 import { FadeIn } from "./primitives";
-import { selectedWork } from "./data";
 
 const keyAreas = [
   "AI Filmmaking",
@@ -65,45 +62,6 @@ export function Experience() {
         </div>
       </FadeIn>
 
-      <FadeIn delay={0.15} className="mx-auto mt-20 max-w-[1000px]">
-        <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-ink/60">
-          Selected Work
-        </h3>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
-          {selectedWork.map((item) => (
-            <a
-              key={item.title}
-              href={item.url}
-              target="_blank"
-              rel="noreferrer"
-              className="group overflow-hidden rounded-3xl border border-ink/15 bg-ink/[0.03] transition-all duration-500 hover:-translate-y-1 hover:border-ink/40"
-            >
-              <div className="overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  width={1280}
-                  height={832}
-                  className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-48"
-                />
-              </div>
-              <div className="p-5">
-                <span className="text-[0.6rem] font-medium uppercase tracking-[0.25em] text-ink/50">
-                  {item.type}
-                </span>
-                <h4 className="mt-2 text-lg font-semibold uppercase tracking-tight text-ink">
-                  {item.title}
-                </h4>
-                <p className="mt-1 text-sm text-ink/70">{item.line}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-[0.65rem] font-medium uppercase tracking-widest text-ink">
-                  View Project <ArrowUpRight className="size-3.5" />
-                </span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </FadeIn>
     </section>
   );
 }
