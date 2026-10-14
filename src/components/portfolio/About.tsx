@@ -1,6 +1,3 @@
-import { motion } from "framer-motion";
-
-import camera from "@/assets/hero-camera.png";
 import { AnimatedText, FadeIn } from "./primitives";
 import { workflow } from "./data";
 
@@ -10,29 +7,6 @@ export function About() {
       id="about"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-x-clip px-5 py-20 sm:px-8 md:px-10"
     >
-      <motion.img
-        src={camera}
-        alt=""
-        aria-hidden
-        loading="lazy"
-        width={1024}
-        height={1024}
-        className="pointer-events-none absolute -left-16 top-10 w-[180px] opacity-10 blur-[1px] md:w-[260px]"
-        animate={{ y: [0, -18, 0], rotate: [-4, 4, -4] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.img
-        src={camera}
-        alt=""
-        aria-hidden
-        loading="lazy"
-        width={1024}
-        height={1024}
-        className="pointer-events-none absolute -right-20 bottom-6 w-[160px] -scale-x-100 opacity-[0.08] blur-[2px] md:w-[240px]"
-        animate={{ y: [0, 20, 0], rotate: [3, -3, 3] }}
-        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <FadeIn className="w-full">
         <h2
           className="hero-heading text-center font-black uppercase leading-none tracking-tight"

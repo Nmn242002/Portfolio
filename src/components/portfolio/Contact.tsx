@@ -1,12 +1,4 @@
-import { Mail, Linkedin, Globe } from "lucide-react";
-
-import { ContactButton, FadeIn } from "./primitives";
-
-const links = [
-  { icon: Mail, label: "Email", value: "add-your-email@example.com", href: "mailto:" },
-  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/", href: "#" },
-  { icon: Globe, label: "Portfolio", value: "Add your portfolio link", href: "#" },
-];
+import { FadeIn } from "./primitives";
 
 export function Contact() {
   return (
@@ -29,26 +21,8 @@ export function Contact() {
         </p>
       </FadeIn>
 
-      <FadeIn delay={0.3} className="mt-10">
-        <ContactButton href="mailto:" />
-      </FadeIn>
-
-      <FadeIn delay={0.4} className="mt-20 w-full max-w-[900px]">
-        <div className="grid gap-4 border-t border-border pt-10 sm:grid-cols-3">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="flex flex-col items-center gap-1 transition-opacity duration-200 hover:opacity-70"
-            >
-              <link.icon className="size-4 text-muted-foreground" />
-              <span className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
-                {link.label}
-              </span>
-              <span className="text-xs text-film">{link.value}</span>
-            </a>
-          ))}
-        </div>
+      <FadeIn delay={0.3} className="mt-16 w-full max-w-[900px] border-t border-border pt-8">
+        <p className="text-sm text-muted-foreground">Contact details coming soon.</p>
         <div className="mt-12">
           <p className="text-lg font-semibold uppercase tracking-tight text-film">
             Naman Jain

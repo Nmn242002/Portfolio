@@ -1,66 +1,129 @@
-import { useEffect, useRef, useState } from "react";
-
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
 import { FadeIn } from "./primitives";
-import { reelRowOne, reelRowTwo } from "./data";
+import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
+import { loopPosition } from "./reel-loop";
 
 export function VisualReel() {
-  const ref = useRef<HTMLElement>(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = ref.current;
-      if (!el) return;
-      const sectionTop = el.offsetTop;
-      setOffset((window.scrollY - sectionTop + window.innerHeight) * 0.3);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <section
-      ref={ref}
-      className="overflow-x-clip bg-background pb-10 pt-24 sm:pt-32 md:pt-40"
-    >
+    <section id="reel" className="overflow-x-clip bg-background pb-10 pt-16 md:pt-24">
       <div className="px-5 sm:px-8 md:px-10">
         <FadeIn>
-          <h2
-            className="hero-heading font-black uppercase leading-none tracking-tight"
-            style={{ fontSize: "clamp(2.5rem, 10vw, 140px)" }}
-          >
-            Visual Reel
-          </h2>
-          <p className="mt-4 max-w-[560px] text-sm font-light uppercase tracking-wide text-muted-foreground sm:text-base">
-            AI-generated films, cinematic visuals and visual experiments.
-          </p>
+          <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">Visual Reel</h2>
+          <p className="mt-4 text-sm font-light uppercase text-muted-foreground">Frames from my projects.</p>
         </FadeIn>
       </div>
-
-      <div className="mt-12 flex flex-col gap-3">
-        <ReelRow images={reelRowOne} translate={-600 + offset} />
-        <ReelRow images={reelRowTwo} translate={-offset} />
+      <div className="mt-10 space-y-4">
+        <ReelRow images={reelRowOne} direction={1} label="Upper reel" />
+        {reelRowTwo.length > 0 && <ReelRow images={reelRowTwo} direction={-1} label="Lower reel" />}
       </div>
     </section>
   );
 }
 
-function ReelRow({ images, translate }: { images: string[]; translate: number }) {
-  const row = [...images, ...images];
+function ReelRow({ images, direction, label }: { images: ReelImage[]; direction: number; label: string }) {
+  const viewport = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const interacting = useRef(false);
+  const drag = useRef<{ x: number; position: number } | null>(null);
+
+  useEffect(() => {
+    const el = viewport.current;
+    const content = track.current;
+    if (!el || !content) return;
+    let cycle = content.scrollWidth / 3;
+    el.scrollLeft = cycle;
+    const resize = new ResizeObserver(() => {
+      cycle = content.scrollWidth / 3;
+      el.scrollLeft = loopPosition(el.scrollLeft, cycle);
+    });
+    resize.observe(content);
+    const normalize = () => {
+      const next = loopPosition(el.scrollLeft, cycle);
+      if (Math.abs(next - el.scrollLeft) > 1) el.scrollLeft = next;
+    };
+    let previousY = window.scrollY;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pageScroll = () => {
+      const delta = window.scrollY - previousY;
+      previousY = window.scrollY;
+      const box = el.getBoundingClientRect();
+      if (!reduced.matches && !interacting.current && box.bottom > 0 && box.top < window.innerHeight) {
+        el.scrollLeft = loopPosition(el.scrollLeft + delta * 0.35 * direction, cycle);
+      }
+    };
+    const wheel = (event: WheelEvent) => {
+      if (event.ctrlKey) return;
+      event.preventDefault();
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      el.scrollLeft = loopPosition(el.scrollLeft + delta * (event.deltaMode === 1 ? 16 : 1), cycle);
+    };
+    el.addEventListener("scroll", normalize, { passive: true });
+    el.addEventListener("wheel", wheel, { passive: false });
+    window.addEventListener("scroll", pageScroll, { passive: true });
+    return () => {
+      resize.disconnect();
+      el.removeEventListener("scroll", normalize);
+      el.removeEventListener("wheel", wheel);
+      window.removeEventListener("scroll", pageScroll);
+    };
+  }, [direction]);
+
+  const move = (sign: number) => {
+    const el = viewport.current;
+    const content = track.current;
+    if (!el || !content) return;
+    const cycle = content.scrollWidth / 3;
+    el.scrollLeft = loopPosition(el.scrollLeft + sign * cycle / images.length, cycle);
+  };
+
   return (
-    <div className="flex gap-3" style={{ transform: `translateX(${translate}px)`, willChange: "transform" }}>
-      {row.map((src, i) => (
-        <img
-          key={`${src}-${i}`}
-          src={src}
-          alt="Cinematic AI frame"
-          loading="lazy"
-          width={420}
-          height={270}
-          className="h-[180px] w-[280px] shrink-0 rounded-2xl object-cover sm:h-[270px] sm:w-[420px]"
-        />
-      ))}
+    <div role="group" aria-label={label}>
+      <div className="mb-3 flex justify-end gap-2 px-5 md:px-10">
+        <Button variant="outline" size="icon" aria-label={`${label}: previous frame`} title="Previous frame" onClick={() => move(-1)}><ArrowLeft /></Button>
+        <Button variant="outline" size="icon" aria-label={`${label}: next frame`} title="Next frame" onClick={() => move(1)}><ArrowRight /></Button>
+      </div>
+      <div
+        ref={viewport}
+        tabIndex={0}
+        role="region"
+        aria-label={`${label} frames`}
+        className="reel-viewport cursor-grab overflow-x-auto overscroll-x-contain focus-visible:outline focus-visible:outline-ring active:cursor-grabbing"
+        onMouseEnter={() => { interacting.current = true; }}
+        onMouseLeave={() => { if (!drag.current) interacting.current = false; }}
+        onFocus={() => { interacting.current = true; }}
+        onBlur={() => { interacting.current = false; }}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            event.preventDefault();
+            move(event.key === "ArrowLeft" ? -1 : 1);
+          }
+        }}
+        onPointerDown={(event) => {
+          if (event.pointerType !== "mouse" || event.button !== 0) return;
+          const el = viewport.current;
+          if (!el) return;
+          el.setPointerCapture(event.pointerId);
+          drag.current = { x: event.clientX, position: el.scrollLeft };
+          interacting.current = true;
+        }}
+        onPointerMove={(event) => {
+          const el = viewport.current;
+          const content = track.current;
+          const start = drag.current;
+          if (!el || !content || !start) return;
+          el.scrollLeft = loopPosition(start.position + start.x - event.clientX, content.scrollWidth / 3);
+        }}
+        onPointerUp={() => { drag.current = null; interacting.current = false; }}
+        onPointerCancel={() => { drag.current = null; interacting.current = false; }}
+      >
+        <div ref={track} className="flex w-max gap-3 pr-3">
+          {[0, 1, 2].flatMap((copy) => images.map((image, index) => (
+            <img key={`${copy}-${image.src}`} src={image.src} alt={copy === 1 ? image.alt : ""} aria-hidden={copy !== 1} loading="lazy" draggable={false} width={1792} height={768} className="aspect-[7/3] w-[280px] shrink-0 select-none rounded-lg object-contain sm:w-[340px] lg:w-[calc((100vw-48px)/4)]" />
+          )))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -88,6 +88,13 @@
   color-scheme: dark;
 }
 
+.reel-viewport {
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+  overflow-anchor: none;
+}
+.reel-viewport::-webkit-scrollbar { display: none; }
+
 @utility hero-heading {
   background: var(--gradient-heading);
   -webkit-background-clip: text;
