@@ -1,5 +1,5 @@
-import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "./primitives";
 import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
@@ -26,8 +26,6 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const hovered = useRef(false);
-  const playbackEnabled = useRef(true);
-  const [playing, setPlaying] = useState(true);
   const drag = useRef<{ x: number; position: number } | null>(null);
 
   useEffect(() => {
@@ -46,10 +44,7 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
       if (Math.abs(next - el.scrollLeft) > 1) el.scrollLeft = next;
     };
     let previousY = window.scrollY;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    playbackEnabled.current = !reduced.matches;
-    setPlaying(playbackEnabled.current);
-    const isPaused = () => !playbackEnabled.current || hovered.current || drag.current !== null;
+    const isPaused = () => hovered.current || drag.current !== null;
     const pageScroll = () => {
       const delta = window.scrollY - previousY;
       previousY = window.scrollY;
@@ -102,10 +97,6 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
   return (
     <div role="group" aria-label={label}>
       <div className="mb-3 flex justify-end gap-2 px-5 md:px-10">
-        <Button variant="outline" size="icon" aria-label={`${label}: ${playing ? "pause" : "play"} automatic movement`} title={playing ? "Pause automatic movement" : "Play automatic movement"} onClick={() => {
-          playbackEnabled.current = !playbackEnabled.current;
-          setPlaying(playbackEnabled.current);
-        }}>{playing ? <Pause /> : <Play />}</Button>
         <Button variant="outline" size="icon" aria-label={`${label}: previous frame`} title="Previous frame" onClick={() => move(-1)}><ArrowLeft /></Button>
         <Button variant="outline" size="icon" aria-label={`${label}: next frame`} title="Next frame" onClick={() => move(1)}><ArrowRight /></Button>
       </div>
