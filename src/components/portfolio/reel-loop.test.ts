@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import { strict as assert } from "node:assert";
-import { autoplayDelta, loopPosition } from "./reel-loop";
+import { autoplayDelta, loopPosition, reelDirections } from "./reel-loop";
 
 describe("independently scrollable looping reel", () => {
   test("forward scrolling wraps to the same frame without reaching an end", () => {
@@ -15,6 +15,20 @@ describe("independently scrollable looping reel", () => {
 });
 
 describe("automatic reel motion", () => {
+  test("upper belt moves visually right by decreasing native scroll position", () => {
+    assert.equal(autoplayDelta(50, 24, reelDirections.upper, false, false), -1.2);
+  });
+
+  test("lower belt moves visually left by increasing native scroll position", () => {
+    assert.equal(autoplayDelta(50, 24, reelDirections.lower, false, false), 1.2);
+  });
+
+  test("both belts pause for hover and resume when hover ends", () => {
+    for (const direction of [reelDirections.upper, reelDirections.lower]) {
+      assert.equal(autoplayDelta(50, 24, direction, true, false), 0);
+      assert.equal(autoplayDelta(50, 24, direction, false, false), direction * 1.2);
+    }
+  });
   test("moves at a regular pace when the reel is not being hovered", () => {
     assert.equal(autoplayDelta(25, 24, 1, false, false), 0.6);
     assert.equal(autoplayDelta(25, 24, -1, false, false), -0.6);
