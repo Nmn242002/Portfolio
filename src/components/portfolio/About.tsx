@@ -23,7 +23,7 @@ export function About() {
         />
         <AnimatedText
           className="text-center text-[clamp(1rem,2vw,1.35rem)] font-medium leading-relaxed text-muted-foreground"
-          text={about.background}
+          text={about.focus}
         />
       </div>
 

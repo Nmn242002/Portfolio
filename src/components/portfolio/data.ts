@@ -157,18 +157,6 @@ export const skills = [
       "Locomotive Scroll",
     ],
   },
-  {
-    title: "WORKFLOW & TECH",
-    description:
-      "A frontend development background that helps build repeatable production workflows.",
-    tags: [
-      "JavaScript / TypeScript",
-      "React.js",
-      "Git / GitHub",
-      "Jira",
-      "Agile / Scrum",
-    ],
-  },
 ];
 
 
@@ -185,8 +173,8 @@ export const workflow = [
 export const about = {
   intro:
     "I’m Naman Jain, an AI filmmaker and video editor at PhysicsWallah, working on an original sci-fi OTT series and 3D animated learning videos for young children. I handle the full process, from character and location design to scene prompts, Hindi/Hinglish dialogue, sound and the final edit.",
-  background:
-    "A frontend development background helps me build repeatable workflows and fix AI output issues.",
+  focus:
+    "My work focuses on combining generative AI with creative storytelling and video editing to turn ideas into cinematic visuals.",
 };
 
 export const experience = [
