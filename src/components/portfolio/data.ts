@@ -191,7 +191,7 @@ export const about = {
 
 export const experience = [
   {
-    role: "AI Creator, AI Content R&D Intern",
+    role: "AI Creator, AI Content R&D Apprentice",
     company: "PW (PhysicsWallah)",
     location: "Noida",
     period: "May 2026 – Present",
@@ -213,18 +213,6 @@ export const experience = [
       "AI-Assisted Post-Production",
       "Thumbnail & Visual Asset Creation",
     ],
-  },
-  {
-    role: "Frontend & Software Engineering Intern",
-    company: "Mintworxs · Thales · Dataoids Analytics LLP",
-    location: "",
-    period: "April 2024 – September 2025",
-    points: [
-      "Mintworxs: built 10+ reusable React.js / TypeScript components, cutting duplicate code by ~30%, and connected 3+ REST APIs through Redux Toolkit, reducing repeat API calls by ~25%.",
-      "Thales: managed Git branches, PRs and code reviews for a 5+ member team and reduced module bugs by ~20% through unit testing and QA.",
-      "Dataoids Analytics: delivered responsive UIs for 3 client apps (~40% better cross-device usability, 90% on time).",
-    ],
-    tags: ["React.js", "TypeScript", "Redux Toolkit", "REST APIs", "Git / GitHub", "Unit Testing"],
   },
 ];
 
