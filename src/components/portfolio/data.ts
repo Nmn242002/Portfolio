@@ -42,12 +42,51 @@ export const skills = [
     title: "AI FILMMAKING",
     description:
       "Creating cinematic visual stories using generative AI and creative direction.",
-    tags: ["AI Filmmaking", "Visual Storytelling", "Shot Design", "Scene Development"],
+    tags: [
+      "AI Filmmaking",
+      "Visual Storytelling",
+      "Shot Design",
+      "Scene Development",
+      "Storyboarding",
+      "Scene Breakdowns",
+      "Character & Location Consistency",
+      "2.39:1 Anamorphic Framing",
+    ],
   },
   {
     title: "AI VIDEO & IMAGE GENERATION",
     description: "Developing cinematic frames and bringing them into motion with generative AI.",
-    tags: ["AI Image Generation", "AI Video Generation", "Prompt Design", "Visual Development", "Image-to-Video", "Text-to-Video", "Character Design", "Environment Design"],
+    tags: [
+      "AI Image Generation",
+      "AI Video Generation",
+      "Prompt Design",
+      "Visual Development",
+      "Image-to-Video",
+      "Text-to-Video",
+      "Character Design",
+      "Environment Design",
+      "Higgsfield",
+      "Veo 3.1 (Google Flow)",
+      "Kling 3.0",
+      "Seedance",
+      "Hailuo",
+      "Hedra Lip-Sync",
+      "Midjourney",
+    ],
+  },
+  {
+    title: "PROMPT ENGINEERING",
+    description:
+      "Writing precise prompts and reference rules that keep AI shots, characters and dialogue consistent.",
+    tags: [
+      "Prompt Engineering",
+      "Scene Prompts",
+      "Character Reference Sheets",
+      "Location Reference Sheets",
+      "Continuity Rules",
+      "Dialogue Tagging",
+      "Fixing AI Output Issues",
+    ],
   },
   {
     title: "VIDEO EDITING",
@@ -61,6 +100,9 @@ export const skills = [
       "Transitions",
       "Sound Sync",
       "Post Production",
+      "AI-led Editing",
+      "Cut Rhythm",
+      "Hard-Cut Editing",
     ],
   },
   {
@@ -91,7 +133,41 @@ export const skills = [
   {
     title: "SOUND DESIGN",
     description: "Shaping the sonic atmosphere of a scene and connecting sound with the edit.",
-    tags: ["Sound Design", "Sound Sync", "Atmosphere"],
+    tags: [
+      "Sound Design",
+      "Sound Sync",
+      "Atmosphere",
+      "ElevenLabs",
+      "v3 Dialogue Tags",
+      "Voice Changer",
+      "SFX & Foley",
+      "Licensed BGM (Adobe Stock)",
+      "Hindi / Hinglish / English Dialogue",
+    ],
+  },
+  {
+    title: "MOTION & ANIMATION",
+    description:
+      "Creating 3D animated character videos and bringing motion to interactive web experiences.",
+    tags: [
+      "3D Animated Character Videos",
+      "GSAP",
+      "Framer Motion",
+      "HTML5 Canvas",
+      "Locomotive Scroll",
+    ],
+  },
+  {
+    title: "WORKFLOW & TECH",
+    description:
+      "A frontend development background that helps build repeatable production workflows.",
+    tags: [
+      "JavaScript / TypeScript",
+      "React.js",
+      "Git / GitHub",
+      "Jira",
+      "Agile / Scrum",
+    ],
   },
 ];
 
