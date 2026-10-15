@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "./primitives";
 import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
-import { autoplayDelta, loopPosition } from "./reel-loop";
+import { autoplayDelta, loopPosition, reelDirections } from "./reel-loop";
 
 export function VisualReel() {
   return (
@@ -15,8 +15,8 @@ export function VisualReel() {
         </FadeIn>
       </div>
       <div className="mt-10 space-y-4">
-        <ReelRow images={reelRowOne} direction={1} label="Upper reel" />
-        {reelRowTwo.length > 0 && <ReelRow images={reelRowTwo} direction={-1} label="Lower reel" />}
+        <ReelRow images={reelRowOne} direction={reelDirections.upper} label="Upper reel" />
+        {reelRowTwo.length > 0 && <ReelRow images={reelRowTwo} direction={reelDirections.lower} label="Lower reel" />}
       </div>
     </section>
   );

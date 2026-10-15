@@ -4,6 +4,12 @@ import campfire from "@/assets/campfire_foreground_bokeh.jpg.asset.json";
 import slab from "@/assets/realistic_slab_avalanche.webp.asset.json";
 import golden from "@/assets/golden_avalanche_sunlight.webp.asset.json";
 import snow from "@/assets/snow_crystals_macro.webp.asset.json";
+import throne from "@/assets/Untitled_design_84.webp.asset.json";
+import hand from "@/assets/Untitled_design_82.webp.asset.json";
+import footsteps from "@/assets/Untitled_design_81.webp.asset.json";
+import jungle from "@/assets/789618340_1578123973850576_2059025430424469689_n.jpg.asset.json";
+import portal from "@/assets/ChatGPT_Image_Aug_8_2026_01_46_57_PM.png.asset.json";
+import scholar from "@/assets/790325968_4059013477562414_4492842088104272810_n.webp.asset.json";
 
 export type ReelImage = { src: string; alt: string };
 export const reelRowOne: ReelImage[] = [
@@ -14,7 +20,14 @@ export const reelRowOne: ReelImage[] = [
   { src: golden.url, alt: "Avalanche in golden mountain sunlight" },
   { src: snow.url, alt: "Close-up of snow crystals in an avalanche" },
 ];
-export const reelRowTwo: ReelImage[] = [];
+export const reelRowTwo: ReelImage[] = [
+  { src: throne.url, alt: "Cloaked figure standing before a futuristic throne" },
+  { src: hand.url, alt: "Close-up of a ringed hand in a futuristic chamber" },
+  { src: footsteps.url, alt: "Boots and a flowing cloak crossing an illuminated floor" },
+  { src: jungle.url, alt: "Traveller and robot watching flying creatures above a jungle" },
+  { src: portal.url, alt: "Robotic hand reaching toward a glowing circular portal" },
+  { src: scholar.url, alt: "Man wearing glasses seated at a desk with books and instruments" },
+];
 
 export const navLinks = [
   { label: "About", href: "#about" },

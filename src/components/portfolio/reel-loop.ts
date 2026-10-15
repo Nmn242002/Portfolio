@@ -1,3 +1,6 @@
+/** Native scroll direction is opposite to the images' visible travel direction. */
+export const reelDirections = { upper: -1, lower: 1 } as const;
+
 /** Keep the viewport in the middle copy while preserving its exact visual position. */
 export function loopPosition(position: number, cycleWidth: number): number {
   if (cycleWidth <= 0) return position;
