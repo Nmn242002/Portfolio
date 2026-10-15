@@ -1,9 +1,9 @@
-import robotGolden from "@/assets/robot_golden_bokeh_1.jpg.asset.json";
-import robotCampfire from "@/assets/robot_campfire_bokeh.jpg.asset.json";
-import campfire from "@/assets/campfire_foreground_bokeh.jpg.asset.json";
-import slab from "@/assets/realistic_slab_avalanche.webp.asset.json";
-import golden from "@/assets/golden_avalanche_sunlight.webp.asset.json";
-import snow from "@/assets/snow_crystals_macro.webp.asset.json";
+import robotGolden from "@/assets/reel/robot_golden_bokeh_1.webp";
+import robotCampfire from "@/assets/reel/robot_campfire_bokeh.webp";
+import solivus from "@/assets/reel/solivus_campfire_portrait.webp";
+import slab from "@/assets/reel/realistic_slab_avalanche.webp";
+import golden from "@/assets/reel/golden_avalanche_sunlight.webp";
+import snow from "@/assets/reel/snow_crystals_macro.webp";
 import throne from "@/assets/Untitled_design_84.webp.asset.json";
 import hand from "@/assets/Untitled_design_82.webp.asset.json";
 import footsteps from "@/assets/Untitled_design_81.webp.asset.json";
@@ -13,12 +13,12 @@ import scholar from "@/assets/790325968_4059013477562414_4492842088104272810_n.w
 
 export type ReelImage = { src: string; alt: string };
 export const reelRowOne: ReelImage[] = [
-  { src: robotGolden.url, alt: "Armoured robot beside a glowing campfire" },
-  { src: robotCampfire.url, alt: "Small robot facing a campfire in the forest" },
-  { src: campfire.url, alt: "Traveller sitting beside a forest campfire" },
-  { src: slab.url, alt: "Slab avalanche descending a mountain slope" },
-  { src: golden.url, alt: "Avalanche in golden mountain sunlight" },
-  { src: snow.url, alt: "Close-up of snow crystals in an avalanche" },
+  { src: robotGolden, alt: "Armoured robot beside a glowing campfire" },
+  { src: robotCampfire, alt: "Small robot facing a campfire in the forest" },
+  { src: solivus, alt: "Man in tactical gear seated on a log beside a forest campfire at night" },
+  { src: slab, alt: "Slab avalanche descending a mountain slope" },
+  { src: golden, alt: "Avalanche in golden mountain sunlight" },
+  { src: snow, alt: "Close-up of snow crystals in an avalanche" },
 ];
 export const reelRowTwo: ReelImage[] = [
   { src: throne.url, alt: "Cloaked figure standing before a futuristic throne" },
