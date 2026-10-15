@@ -54,6 +54,20 @@ export const skills = [
     ],
   },
   {
+    title: "STORY & SCRIPT DEVELOPMENT",
+    description:
+      "Shaping ideas into scripts, episodes and sequences that hold together on screen.",
+    tags: [
+      "Scriptwriting",
+      "Dialogue Writing",
+      "Episodic Storytelling",
+      "Multi-Thread Sequences",
+      "Split-Screen Storytelling",
+      "Pitch-to-Prototype",
+      "Kids' Learning Content",
+    ],
+  },
+  {
     title: "AI VIDEO & IMAGE GENERATION",
     description: "Developing cinematic frames and bringing them into motion with generative AI.",
     tags: [
