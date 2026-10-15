@@ -4,4 +4,5 @@
 - [x] Bring About highlighting forward; remove invented selected work; merge generation skills and add sound design.
 - [x] Verify updated portfolio interactions.
 - [x] Add steady reel autoplay with hover pause, manual inspection, and page-scroll motion.
-- [ ] Add portrait, expanded biography, experience skills, lower-belt media, project links and contact details — awaiting Naman's materials.
+- [ ] Add supplied lower-belt stills, set upper belt right / lower belt left, and verify independent hover pause and resume.
+- [ ] Add portrait, expanded biography, experience skills, project links and contact details — awaiting Naman's materials.
