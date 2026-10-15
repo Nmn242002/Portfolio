@@ -43,6 +43,13 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
       const next = loopPosition(el.scrollLeft, cycle);
       if (Math.abs(next - el.scrollLeft) > 1) el.scrollLeft = next;
     };
+    // Own the exact position: the browser snaps scrollLeft to device pixels, and reading it
+    // back each frame would bias speed by direction on scaled displays.
+    let position = el.scrollLeft;
+    const scrollTo = (next: number) => {
+      position = loopPosition(next, cycle);
+      el.scrollLeft = position;
+    };
     let previousY = window.scrollY;
     const isPaused = () => hovered.current || drag.current !== null;
     const pageScroll = () => {
@@ -50,27 +57,23 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
       previousY = window.scrollY;
       const box = el.getBoundingClientRect();
       if (!isPaused() && box.bottom > 0 && box.top < window.innerHeight) {
-        el.scrollLeft = loopPosition(el.scrollLeft + delta * 0.35 * direction, cycle);
+        scrollTo(position + delta * 0.35 * direction);
       }
     };
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
       event.preventDefault();
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      el.scrollLeft = loopPosition(el.scrollLeft + delta * (event.deltaMode === 1 ? 16 : 1), cycle);
+      scrollTo(position + delta * (event.deltaMode === 1 ? 16 : 1));
     };
     let animationFrame = 0;
     let previousTime = performance.now();
-    let pendingMotion = 0;
     const animate = (time: number) => {
-      const delta = autoplayDelta(time - previousTime, 24, direction, isPaused(), false);
+      const delta = autoplayDelta(time - previousTime, 32, direction, isPaused(), false);
       previousTime = time;
-      pendingMotion += delta;
-      const wholePixels = Math.trunc(pendingMotion);
-      if (wholePixels !== 0 && !isPaused()) {
-        el.scrollLeft = loopPosition(el.scrollLeft + wholePixels, cycle);
-        pendingMotion -= wholePixels;
-      }
+      // Adopt moves made elsewhere (drag, buttons, keys); snapping alone stays under a pixel.
+      if (Math.abs(el.scrollLeft - position) > 1) position = el.scrollLeft;
+      if (delta !== 0) scrollTo(position + delta);
       animationFrame = requestAnimationFrame(animate);
     };
     animationFrame = requestAnimationFrame(animate);
