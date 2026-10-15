@@ -63,10 +63,16 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
     };
     let animationFrame = 0;
     let previousTime = performance.now();
+    let pendingMotion = 0;
     const animate = (time: number) => {
       const delta = autoplayDelta(time - previousTime, 24, direction, isPaused(), reduced.matches);
       previousTime = time;
-      if (delta !== 0) el.scrollLeft = loopPosition(el.scrollLeft + delta, cycle);
+      pendingMotion += delta;
+      const wholePixels = Math.trunc(pendingMotion);
+      if (wholePixels !== 0 && !isPaused()) {
+        el.scrollLeft = loopPosition(el.scrollLeft + wholePixels, cycle);
+        pendingMotion -= wholePixels;
+      }
       animationFrame = requestAnimationFrame(animate);
     };
     animationFrame = requestAnimationFrame(animate);
@@ -104,7 +110,7 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
         className="reel-viewport cursor-grab overflow-x-auto overscroll-x-contain focus-visible:outline focus-visible:outline-ring active:cursor-grabbing"
         onMouseEnter={() => { hovered.current = true; }}
         onMouseLeave={() => { hovered.current = false; }}
-        onFocus={() => { focused.current = true; }}
+        onFocus={(event) => { focused.current = event.currentTarget.matches(":focus-visible"); }}
         onBlur={() => { focused.current = false; }}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
