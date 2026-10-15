@@ -1,5 +1,5 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "./primitives";
 import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
@@ -26,7 +26,8 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const hovered = useRef(false);
-  const focused = useRef(false);
+  const playbackEnabled = useRef(true);
+  const [playing, setPlaying] = useState(true);
   const drag = useRef<{ x: number; position: number } | null>(null);
 
   useEffect(() => {
@@ -46,12 +47,14 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
     };
     let previousY = window.scrollY;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const isPaused = () => hovered.current || focused.current || drag.current !== null;
+    playbackEnabled.current = !reduced.matches;
+    setPlaying(playbackEnabled.current);
+    const isPaused = () => !playbackEnabled.current || hovered.current || drag.current !== null;
     const pageScroll = () => {
       const delta = window.scrollY - previousY;
       previousY = window.scrollY;
       const box = el.getBoundingClientRect();
-      if (!reduced.matches && !isPaused() && box.bottom > 0 && box.top < window.innerHeight) {
+      if (!isPaused() && box.bottom > 0 && box.top < window.innerHeight) {
         el.scrollLeft = loopPosition(el.scrollLeft + delta * 0.35 * direction, cycle);
       }
     };
@@ -65,7 +68,7 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
     let previousTime = performance.now();
     let pendingMotion = 0;
     const animate = (time: number) => {
-      const delta = autoplayDelta(time - previousTime, 24, direction, isPaused(), reduced.matches);
+      const delta = autoplayDelta(time - previousTime, 24, direction, isPaused(), false);
       previousTime = time;
       pendingMotion += delta;
       const wholePixels = Math.trunc(pendingMotion);
@@ -99,6 +102,10 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
   return (
     <div role="group" aria-label={label}>
       <div className="mb-3 flex justify-end gap-2 px-5 md:px-10">
+        <Button variant="outline" size="icon" aria-label={`${label}: ${playing ? "pause" : "play"} automatic movement`} title={playing ? "Pause automatic movement" : "Play automatic movement"} onClick={() => {
+          playbackEnabled.current = !playbackEnabled.current;
+          setPlaying(playbackEnabled.current);
+        }}>{playing ? <Pause /> : <Play />}</Button>
         <Button variant="outline" size="icon" aria-label={`${label}: previous frame`} title="Previous frame" onClick={() => move(-1)}><ArrowLeft /></Button>
         <Button variant="outline" size="icon" aria-label={`${label}: next frame`} title="Next frame" onClick={() => move(1)}><ArrowRight /></Button>
       </div>
@@ -110,8 +117,6 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
         className="reel-viewport cursor-grab overflow-x-auto overscroll-x-contain focus-visible:outline focus-visible:outline-ring active:cursor-grabbing"
         onMouseEnter={() => { hovered.current = true; }}
         onMouseLeave={() => { hovered.current = false; }}
-        onFocus={(event) => { focused.current = event.currentTarget.matches(":focus-visible"); }}
-        onBlur={() => { focused.current = false; }}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
@@ -134,6 +139,7 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
         }}
         onPointerUp={() => { drag.current = null; }}
         onPointerCancel={() => { drag.current = null; }}
+        onLostPointerCapture={() => { drag.current = null; }}
       >
         <div ref={track} className="flex w-max gap-3 pr-3">
           {[0, 1, 2].flatMap((copy) => images.map((image, index) => (

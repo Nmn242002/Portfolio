@@ -11,4 +11,5 @@
 
 - Portfolio content is centralized in the browser-safe data module and supplied image assets use CDN pointers, keeping unverified work out of presentation code.
 - Reel belts use native scrolling with three identical copies and pure motion helpers; accumulate fractional animation movement so native scroll rounding cannot stop autoplay, while preserving manual navigation and page-scroll motion.
+- Reel playback respects reduced motion on initial load but offers an explicit play/pause control per belt; keyboard focus alone must not latch playback off after hover ends.
 - Keep unused React Three Fiber scene objects in createElement form rather than JSX: source-attribute injection is incompatible with the 3D renderer.

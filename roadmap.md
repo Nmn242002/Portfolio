@@ -5,4 +5,5 @@
 - [x] Verify updated portfolio interactions.
 - [x] Add steady reel autoplay with hover pause, manual inspection, and page-scroll motion.
 - [x] Add supplied lower-belt stills, set upper belt right / lower belt left, and verify independent hover pause and resume.
+- [x] Remove focus-latched autoplay pauses and provide explicit playback controls when reduced-motion settings prevent autoplay.
 - [ ] Add portrait, expanded biography, experience skills, project links and contact details — awaiting Naman's materials.
