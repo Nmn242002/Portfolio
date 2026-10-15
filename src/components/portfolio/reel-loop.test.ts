@@ -37,4 +37,8 @@ describe("automatic reel motion", () => {
   test("stops while hovered so frames can be inspected manually", () => {
     assert.equal(autoplayDelta(25, 24, 1, true, false), 0);
   });
+  test("reduced-motion default is paused, but explicitly enabled playback advances", () => {
+    assert.equal(autoplayDelta(50, 24, 1, false, true), 0);
+    assert.equal(autoplayDelta(50, 24, 1, false, false), 1.2);
+  });
 });
