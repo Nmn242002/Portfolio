@@ -1,4 +1,5 @@
 import { FadeIn } from "./primitives";
+import { contactLinks } from "./data";
 
 export function Contact() {
   return (
@@ -22,7 +23,25 @@ export function Contact() {
       </FadeIn>
 
       <FadeIn delay={0.3} className="mt-16 w-full max-w-[900px] border-t border-border pt-8">
-        <p className="text-sm text-muted-foreground">Contact details coming soon.</p>
+        <ul className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-12">
+          {contactLinks.map((link) => (
+            <li key={link.label}>
+              <p className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">{link.label}</p>
+              {link.href ? (
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                  className="mt-2 inline-block break-all text-sm text-film transition-opacity duration-200 hover:opacity-70 sm:text-base"
+                >
+                  {link.value}
+                </a>
+              ) : (
+                <p className="mt-2 text-sm text-film sm:text-base">{link.value}</p>
+              )}
+            </li>
+          ))}
+        </ul>
         <div className="mt-12">
           <p className="text-lg font-semibold uppercase tracking-tight text-film">
             Naman Jain

@@ -1,16 +1,5 @@
 import { FadeIn } from "./primitives";
-
-const keyAreas = [
-  "AI Filmmaking",
-  "AI Image Generation",
-  "AI Video Generation",
-  "Cinematic Visual Creation",
-  "Creative Concept Development",
-  "Video Editing",
-  "Adobe Premiere Pro",
-  "AI-Assisted Post-Production",
-  "Thumbnail & Visual Asset Creation",
-];
+import { experience } from "./data";
 
 export function Experience() {
   return (
@@ -27,41 +16,46 @@ export function Experience() {
         </h2>
       </FadeIn>
 
-      <FadeIn delay={0.1} className="mx-auto mt-16 max-w-[1000px]">
-        <div className="flex flex-col gap-6 border-t border-ink/15 pt-8 md:flex-row md:gap-12">
-          <span className="text-4xl font-black leading-none text-ink/25 md:text-5xl">01</span>
-          <div className="flex-1">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="text-2xl font-semibold uppercase tracking-tight text-ink sm:text-3xl md:text-4xl">
-                AI Filmmaker Intern
-              </h3>
-              <span className="text-xs font-medium uppercase tracking-widest text-ink/60">
-                ~6 Months
+      <div className="mx-auto mt-16 max-w-[1000px] space-y-14">
+        {experience.map((job, i) => (
+          <FadeIn key={job.role} delay={0.1 + i * 0.06}>
+            <div className="flex flex-col gap-6 border-t border-ink/15 pt-8 md:flex-row md:gap-12">
+              <span className="text-4xl font-black leading-none text-ink/25 md:text-5xl">
+                {String(i + 1).padStart(2, "0")}
               </span>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="text-2xl font-semibold uppercase tracking-tight text-ink sm:text-3xl md:text-4xl">
+                    {job.role}
+                  </h3>
+                  <span className="text-xs font-medium uppercase tracking-widest text-ink/60">
+                    {job.period}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm font-medium uppercase tracking-widest text-ink/70">
+                  {job.company}
+                  {job.location && ` · ${job.location}`}
+                </p>
+                <ul className="mt-6 max-w-[720px] list-disc space-y-3 pl-5 text-base leading-relaxed text-ink/80 marker:text-ink/40">
+                  {job.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {job.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-ink/20 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-wider text-ink/70"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="mt-1 text-sm font-medium uppercase tracking-widest text-ink/70">
-              Physics Wallah
-            </p>
-            <p className="mt-6 max-w-[720px] text-base leading-relaxed text-ink/80">
-              Worked as an AI Filmmaker Intern at Physics Wallah, creating AI-driven visual
-              content and cinematic video projects. Worked across the creative process from
-              developing visual concepts and generating AI assets to video generation, editing
-              and finalising content for production.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {keyAreas.map((area) => (
-                <span
-                  key={area}
-                  className="rounded-full border border-ink/20 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-wider text-ink/70"
-                >
-                  {area}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </FadeIn>
-
+          </FadeIn>
+        ))}
+      </div>
     </section>
   );
 }

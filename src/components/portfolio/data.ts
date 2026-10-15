@@ -181,3 +181,76 @@ export const workflow = [
   "Editing",
   "Final Cinematic Output",
 ];
+
+export const about = {
+  intro:
+    "I’m Naman Jain, an AI filmmaker and video editor at PhysicsWallah, working on an original sci-fi OTT series and 3D animated learning videos for young children. I handle the full process, from character and location design to scene prompts, Hindi/Hinglish dialogue, sound and the final edit.",
+  background:
+    "A frontend development background helps me build repeatable workflows and fix AI output issues.",
+};
+
+export const experience = [
+  {
+    role: "AI Creator, AI Content R&D Intern",
+    company: "PW (PhysicsWallah)",
+    location: "Noida",
+    period: "May 2026 – Present",
+    points: [
+      "Building the AI production workflow for an original multi-episode sci-fi OTT series (Solivus / Project Earth), from scripts and character design to scene prompts, dialogue, sound and edit for Episodes 2–5.",
+      "Set up locked character and location reference sheets, a static-camera, hard-cut look at 2.39:1, a 15-second clip standard and continuity rules that hold across episodes.",
+      "Handle all audio: ElevenLabs dialogue scripts tagged in Roman and Devanagari, Voice Changer for more natural delivery, foley and SFX, and licensed BGM with every license number logged.",
+      "Follow strict production rules: only original characters, no copyrighted IP or music, natural skin texture and movement, and accurate period and regional detail in historical scenes.",
+      "Work with product and content teams to turn early pitch ideas into working AI prototypes.",
+    ],
+    tags: [
+      "AI Filmmaking",
+      "AI Image Generation",
+      "AI Video Generation",
+      "Cinematic Visual Creation",
+      "Creative Concept Development",
+      "Video Editing",
+      "Adobe Premiere Pro",
+      "AI-Assisted Post-Production",
+      "Thumbnail & Visual Asset Creation",
+    ],
+  },
+  {
+    role: "Frontend & Software Engineering Intern",
+    company: "Mintworxs · Thales · Dataoids Analytics LLP",
+    location: "",
+    period: "April 2024 – September 2025",
+    points: [
+      "Mintworxs: built 10+ reusable React.js / TypeScript components, cutting duplicate code by ~30%, and connected 3+ REST APIs through Redux Toolkit, reducing repeat API calls by ~25%.",
+      "Thales: managed Git branches, PRs and code reviews for a 5+ member team and reduced module bugs by ~20% through unit testing and QA.",
+      "Dataoids Analytics: delivered responsive UIs for 3 client apps (~40% better cross-device usability, 90% on time).",
+    ],
+    tags: ["React.js", "TypeScript", "Redux Toolkit", "REST APIs", "Git / GitHub", "Unit Testing"],
+  },
+];
+
+export const projects = [
+  {
+    title: "Solivus / Project Earth",
+    type: "AI Sci-fi OTT Series",
+    client: "PhysicsWallah",
+    points: [
+      "Directed multi-thread sequences including a nightclub party, a chase and a split-screen climax, keeping characters, vehicles and locations matched from shot to shot.",
+      "Edited episodes to a locked-camera, hard-cut rhythm with diegetic sound, so AI shots play as one film.",
+    ],
+  },
+  {
+    title: "Counting with Characters",
+    type: "3D Animated Videos for Young Kids",
+    client: "PhysicsWallah",
+    points: [
+      "Produced Pixar-style 3D animated videos that teach counting to children in early grades, with original characters, bright scenes and simple, rhythmic pacing.",
+      "Kept characters and settings consistent across videos and matched visuals with clear, child-friendly voiceover and sound.",
+    ],
+  },
+];
+
+export const contactLinks = [
+  { label: "Email", value: "jainnaman242002@gmail.com", href: "mailto:jainnaman242002@gmail.com" },
+  { label: "GitHub", value: "github.com/Nmn242002", href: "https://github.com/Nmn242002" },
+  { label: "Location", value: "Delhi, India", href: "" },
+];
