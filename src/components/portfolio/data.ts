@@ -186,7 +186,7 @@ export const workflow = [
 
 export const about = {
   intro:
-    "I’m Naman Jain, an AI filmmaker and video editor at PhysicsWallah, working on an original sci-fi OTT series and 3D animated learning videos for young children. I handle the full process, from character and location design to scene prompts, Hindi/Hinglish dialogue, sound and the final edit.",
+    "I’m Naman Jain — an AI filmmaker, storyteller, prompt engineer, video editor, sound design artist, visual thinker and creative director. At PhysicsWallah, I’m working on an original sci-fi OTT series and 3D animated learning videos for young children, handling the full process from character and location design to scene prompts, Hindi/Hinglish dialogue, sound and the final edit.",
   focus:
     "My work focuses on combining generative AI with creative storytelling and video editing to turn ideas into cinematic visuals.",
 };
