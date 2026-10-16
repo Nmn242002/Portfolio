@@ -241,6 +241,5 @@ export const projects = [
 
 export const contactLinks = [
   { label: "Email", value: "jainnaman242002@gmail.com", href: "mailto:jainnaman242002@gmail.com" },
-  { label: "GitHub", value: "github.com/Nmn242002", href: "https://github.com/Nmn242002" },
   { label: "Location", value: "Delhi, India", href: "" },
 ];
