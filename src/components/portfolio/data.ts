@@ -40,8 +40,7 @@ export const navLinks = [
 export const skills = [
   {
     title: "AI FILMMAKING",
-    description:
-      "Creating cinematic visual stories using generative AI and creative direction.",
+    description: "Creating cinematic visual stories using generative AI and creative direction.",
     tags: [
       "AI Filmmaking",
       "Visual Storytelling",
@@ -55,8 +54,7 @@ export const skills = [
   },
   {
     title: "STORY & SCRIPT DEVELOPMENT",
-    description:
-      "Shaping ideas into scripts, episodes and sequences that hold together on screen.",
+    description: "Shaping ideas into scripts, episodes and sequences that hold together on screen.",
     tags: [
       "Scriptwriting",
       "Dialogue Writing",
@@ -104,8 +102,7 @@ export const skills = [
   },
   {
     title: "VIDEO EDITING",
-    description:
-      "Editing AI-generated footage into coherent and engaging visual stories.",
+    description: "Editing AI-generated footage into coherent and engaging visual stories.",
     tags: [
       "Adobe Premiere Pro",
       "Video Editing",
@@ -123,14 +120,7 @@ export const skills = [
     title: "VISUAL DIRECTION",
     description:
       "Developing the visual language of a project through composition, lighting, camera language and atmosphere.",
-    tags: [
-      "Composition",
-      "Lighting",
-      "Camera Language",
-      "Mood",
-      "Atmosphere",
-      "Visual References",
-    ],
+    tags: ["Composition", "Lighting", "Camera Language", "Mood", "Atmosphere", "Visual References"],
   },
   {
     title: "AI CREATIVE WORKFLOW",
@@ -172,7 +162,6 @@ export const skills = [
     ],
   },
 ];
-
 
 export const workflow = [
   "Idea",

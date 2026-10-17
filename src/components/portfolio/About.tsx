@@ -35,7 +35,11 @@ export function About() {
               className="flex items-center gap-3 text-[0.6rem] font-light uppercase tracking-[0.2em] text-muted-foreground sm:text-xs"
             >
               {step}
-              {i < workflow.length - 1 && <span aria-hidden className="opacity-40">/</span>}
+              {i < workflow.length - 1 && (
+                <span aria-hidden className="opacity-40">
+                  /
+                </span>
+              )}
             </span>
           ))}
         </div>

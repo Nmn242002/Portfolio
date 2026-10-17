@@ -5,7 +5,9 @@ export function Projects() {
   return (
     <section id="projects" className="bg-background px-5 py-20 sm:px-8 md:px-10">
       <FadeIn>
-        <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">Selected Work</h2>
+        <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">
+          Selected Work
+        </h2>
       </FadeIn>
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         {projects.map((project, i) => (

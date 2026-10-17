@@ -10,19 +10,33 @@ export function VisualReel() {
     <section id="reel" className="overflow-x-clip bg-background pb-10 pt-16 md:pt-24">
       <div className="px-5 sm:px-8 md:px-10">
         <FadeIn>
-          <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">Visual Reel</h2>
-          <p className="mt-4 text-sm font-light uppercase text-muted-foreground">Frames from my projects.</p>
+          <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">
+            Visual Reel
+          </h2>
+          <p className="mt-4 text-sm font-light uppercase text-muted-foreground">
+            Frames from my projects.
+          </p>
         </FadeIn>
       </div>
       <div className="mt-10 space-y-4">
         <ReelRow images={reelRowOne} direction={reelDirections.upper} label="Upper reel" />
-        {reelRowTwo.length > 0 && <ReelRow images={reelRowTwo} direction={reelDirections.lower} label="Lower reel" />}
+        {reelRowTwo.length > 0 && (
+          <ReelRow images={reelRowTwo} direction={reelDirections.lower} label="Lower reel" />
+        )}
       </div>
     </section>
   );
 }
 
-function ReelRow({ images, direction, label }: { images: ReelImage[]; direction: number; label: string }) {
+function ReelRow({
+  images,
+  direction,
+  label,
+}: {
+  images: ReelImage[];
+  direction: number;
+  label: string;
+}) {
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const hovered = useRef(false);
@@ -94,14 +108,30 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
     const content = track.current;
     if (!el || !content) return;
     const cycle = content.scrollWidth / 3;
-    el.scrollLeft = loopPosition(el.scrollLeft + sign * cycle / images.length, cycle);
+    el.scrollLeft = loopPosition(el.scrollLeft + (sign * cycle) / images.length, cycle);
   };
 
   return (
     <div role="group" aria-label={label}>
       <div className="mb-3 flex justify-end gap-2 px-5 md:px-10">
-        <Button variant="outline" size="icon" aria-label={`${label}: previous frame`} title="Previous frame" onClick={() => move(-1)}><ArrowLeft /></Button>
-        <Button variant="outline" size="icon" aria-label={`${label}: next frame`} title="Next frame" onClick={() => move(1)}><ArrowRight /></Button>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label={`${label}: previous frame`}
+          title="Previous frame"
+          onClick={() => move(-1)}
+        >
+          <ArrowLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label={`${label}: next frame`}
+          title="Next frame"
+          onClick={() => move(1)}
+        >
+          <ArrowRight />
+        </Button>
       </div>
       <div
         ref={viewport}
@@ -109,8 +139,12 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
         role="region"
         aria-label={`${label} frames`}
         className="reel-viewport cursor-grab overflow-x-auto overscroll-x-contain focus-visible:outline focus-visible:outline-ring active:cursor-grabbing"
-        onMouseEnter={() => { hovered.current = true; }}
-        onMouseLeave={() => { hovered.current = false; }}
+        onMouseEnter={() => {
+          hovered.current = true;
+        }}
+        onMouseLeave={() => {
+          hovered.current = false;
+        }}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             event.preventDefault();
@@ -129,16 +163,37 @@ function ReelRow({ images, direction, label }: { images: ReelImage[]; direction:
           const content = track.current;
           const start = drag.current;
           if (!el || !content || !start) return;
-          el.scrollLeft = loopPosition(start.position + start.x - event.clientX, content.scrollWidth / 3);
+          el.scrollLeft = loopPosition(
+            start.position + start.x - event.clientX,
+            content.scrollWidth / 3,
+          );
         }}
-        onPointerUp={() => { drag.current = null; }}
-        onPointerCancel={() => { drag.current = null; }}
-        onLostPointerCapture={() => { drag.current = null; }}
+        onPointerUp={() => {
+          drag.current = null;
+        }}
+        onPointerCancel={() => {
+          drag.current = null;
+        }}
+        onLostPointerCapture={() => {
+          drag.current = null;
+        }}
       >
         <div ref={track} className="flex w-max gap-3 pr-3">
-          {[0, 1, 2].flatMap((copy) => images.map((image, index) => (
-            <img key={`${copy}-${image.src}`} src={image.src} alt={copy === 1 ? image.alt : ""} aria-hidden={copy !== 1} loading="lazy" draggable={false} width={1792} height={768} className="aspect-[7/3] w-[280px] shrink-0 select-none rounded-lg object-contain sm:w-[340px] lg:w-[calc((100vw-48px)/4)]" />
-          )))}
+          {[0, 1, 2].flatMap((copy) =>
+            images.map((image, index) => (
+              <img
+                key={`${copy}-${image.src}`}
+                src={image.src}
+                alt={copy === 1 ? image.alt : ""}
+                aria-hidden={copy !== 1}
+                loading="lazy"
+                draggable={false}
+                width={1792}
+                height={768}
+                className="aspect-[7/3] w-[280px] shrink-0 select-none rounded-lg object-contain sm:w-[340px] lg:w-[calc((100vw-48px)/4)]"
+              />
+            )),
+          )}
         </div>
       </div>
     </div>

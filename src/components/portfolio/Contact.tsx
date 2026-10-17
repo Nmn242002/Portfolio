@@ -26,7 +26,9 @@ export function Contact() {
         <ul className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-12">
           {contactLinks.map((link) => (
             <li key={link.label}>
-              <p className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">{link.label}</p>
+              <p className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
+                {link.label}
+              </p>
               {link.href ? (
                 <a
                   href={link.href}
@@ -43,9 +45,7 @@ export function Contact() {
           ))}
         </ul>
         <div className="mt-12">
-          <p className="text-lg font-semibold uppercase tracking-tight text-film">
-            Naman Jain
-          </p>
+          <p className="text-lg font-semibold uppercase tracking-tight text-film">Naman Jain</p>
           <p className="mt-1 text-[0.65rem] font-light uppercase tracking-[0.25em] text-muted-foreground">
             AI Filmmaker • AI Visual Creator • Video Editor
           </p>

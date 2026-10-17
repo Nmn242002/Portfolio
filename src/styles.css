@@ -72,15 +72,8 @@
   --ring: oklch(0.902 0.014 236.5 / 40%);
 
   --gradient-heading: linear-gradient(180deg, #646973 0%, #bbccd7 100%);
-  --gradient-contact: linear-gradient(
-    123deg,
-    #18011f 7%,
-    #b600a8 37%,
-    #7621b0 72%,
-    #be4c00 100%
-  );
-  --shadow-contact:
-    0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721b1 inset;
+  --gradient-contact: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
+  --shadow-contact: 0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721b1 inset;
   --shadow-glow: 0 30px 120px -30px rgba(118, 33, 176, 0.45);
 }
 
@@ -93,7 +86,9 @@
   touch-action: pan-x pan-y;
   overflow-anchor: none;
 }
-.reel-viewport::-webkit-scrollbar { display: none; }
+.reel-viewport::-webkit-scrollbar {
+  display: none;
+}
 
 @utility hero-heading {
   background: var(--gradient-heading);

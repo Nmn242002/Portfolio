@@ -15,7 +15,11 @@ function CameraModel() {
   const ref = useRef<THREE.Group>(null);
   const scale = useMemo(() => {
     scene.traverse((o) => {
-      if (/strap/i.test(o.name) || /strap/i.test(((o as THREE.Mesh).material as THREE.Material | undefined)?.name ?? "")) o.visible = false;
+      if (
+        /strap/i.test(o.name) ||
+        /strap/i.test(((o as THREE.Mesh).material as THREE.Material | undefined)?.name ?? "")
+      )
+        o.visible = false;
     });
     const body = scene.getObjectByName("Camera_01") ?? scene;
     const size = new THREE.Box3().setFromObject(body).getSize(new THREE.Vector3());
@@ -42,7 +46,11 @@ const LENS_YAW = 0;
 
 export default function DslrCamera3D() {
   return (
-    <Canvas dpr={[1, 2]} camera={{ position: [0, 0.5, 7], fov: 35 }} gl={{ alpha: true, antialias: true }}>
+    <Canvas
+      dpr={[1, 2]}
+      camera={{ position: [0, 0.5, 7], fov: 35 }}
+      gl={{ alpha: true, antialias: true }}
+    >
       {h(
         Fragment,
         null,
@@ -54,8 +62,20 @@ export default function DslrCamera3D() {
           Environment,
           { resolution: 256 },
           h(Lightformer, { intensity: 3, position: [0, 5, 2], scale: [10, 3, 1] }),
-          h(Lightformer, { intensity: 1.5, color: "#bbccd7", position: [-5, 1, 2], "rotation-y": Math.PI / 2, scale: [10, 2, 1] }),
-          h(Lightformer, { intensity: 1.5, color: "#7621b0", position: [5, 0, 2], "rotation-y": -Math.PI / 2, scale: [10, 2, 1] }),
+          h(Lightformer, {
+            intensity: 1.5,
+            color: "#bbccd7",
+            position: [-5, 1, 2],
+            "rotation-y": Math.PI / 2,
+            scale: [10, 2, 1],
+          }),
+          h(Lightformer, {
+            intensity: 1.5,
+            color: "#7621b0",
+            position: [5, 0, 2],
+            "rotation-y": -Math.PI / 2,
+            scale: [10, 2, 1],
+          }),
           h(Lightformer, { intensity: 2, position: [0, 0, 6], scale: [4, 4, 1], form: "ring" }),
         ),
         h(Suspense, { fallback: null }, h(CameraModel)),
