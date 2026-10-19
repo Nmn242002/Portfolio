@@ -1,12 +1,15 @@
 import { FadeIn } from "./primitives";
 import { contactLinks } from "./data";
+import { PosterBackdrop } from "./PosterBackdrop";
 
 export function Contact() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-x-clip px-5 py-24 text-center sm:px-8 md:px-10"
+      className="relative isolate flex min-h-[90vh] flex-col items-center justify-center overflow-x-clip px-5 py-24 text-center sm:px-8 md:px-10"
     >
+      <PosterBackdrop />
+
       <FadeIn>
         <h2
           className="hero-heading mx-auto max-w-[1100px] font-black uppercase leading-[0.95] tracking-tight"

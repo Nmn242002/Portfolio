@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 
 import { ContactButton } from "./primitives";
 import { navLinks } from "./data";
+import { HeroPortrait } from "./HeroPortrait";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
@@ -41,12 +42,13 @@ export function Hero() {
         </motion.h1>
       </div>
 
-      {/* Reserved for Naman's supplied hair-to-chest portrait, centered independently of the footer. */}
+      {/* Hair-to-chest portrait, centered independently of the footer. */}
       <div
         data-portrait-slot
-        aria-hidden="true"
-        className="relative mx-auto min-h-[240px] w-full max-w-[560px] flex-1 sm:min-h-[320px]"
-      />
+        className="relative mx-auto min-h-[300px] w-full max-w-[560px] flex-1 sm:min-h-[400px]"
+      >
+        <HeroPortrait />
+      </div>
 
       <div className="relative z-20 mt-auto flex items-end justify-between gap-4 px-6 pb-8 md:px-10 md:pb-10">
         <motion.div

@@ -180,6 +180,18 @@ export const about = {
     "Right now I’m bringing Project Earth to life at PhysicsWallah, an original sci-fi OTT series: designing its characters and worlds, writing its Hindi/Hinglish dialogue, shaping its sound and cutting it to a 2.39:1 cinematic frame. Give me a story, and I’ll give you something people can’t stop watching.",
 };
 
+export const heroPortrait = {
+  src: "/naman-portrait.webp",
+  alt: "Portrait of Naman Jain",
+  width: 900,
+  height: 1197,
+};
+
+/** Project Earth key art behind the closing headline. */
+export const contactBackdrop = {
+  src: "/projects/project-earth/key-art.webp",
+};
+
 export const experience = [
   {
     role: "AI Creator, AI Content R&D Apprentice",
@@ -207,11 +219,77 @@ export const experience = [
   },
 ];
 
-export const projects = [
+export type Project = {
+  title: string;
+  type: string;
+  client: string;
+  points: string[];
+  href?: string;
+  /** `video` is the muted card preview, `full` the complete scene played in-page, `href` its Drive original. */
+  scenes?: {
+    label: string;
+    title: string;
+    video: string;
+    poster: string;
+    full: string;
+    href: string;
+  }[];
+  /** Frame of the scene previews: 2.39:1 cinemascope by default, or 16:9 video. */
+  sceneAspect?: "wide" | "video";
+};
+
+const earth = "/projects/project-earth";
+const counting = "/projects/counting-with-characters";
+const driveFile = (id: string) => `https://drive.google.com/file/d/${id}/view`;
+
+export const projects: Project[] = [
   {
     title: "Solivus / Project Earth",
     type: "AI Sci-fi OTT Series",
     client: "PhysicsWallah",
+    href: "https://drive.google.com/drive/folders/15q7G40GI8OFfCkTVKiDRQSXakhVzP5Yi?usp=sharing",
+    scenes: [
+      {
+        label: "Ep 4 · Scene 5",
+        title: "The Hologram Briefing",
+        video: `${earth}/ep4-scene5.mp4`,
+        full: `${earth}/ep4-scene5-full.mp4`,
+        poster: `${earth}/ep4-scene5.jpg`,
+        href: driveFile("1tNFXbV2MHvnhaPEn6HKo50LxIDhmIij_"),
+      },
+      {
+        label: "Ep 5 · Scene 2",
+        title: "The Throne Room",
+        video: `${earth}/ep5-scene2.mp4`,
+        full: `${earth}/ep5-scene2-full.mp4`,
+        poster: `${earth}/ep5-scene2.jpg`,
+        href: driveFile("17FXT0G9IHUR2q76O97ZQSX8e_XhTCkLa"),
+      },
+      {
+        label: "Ep 5 · Scene 4",
+        title: "The Council",
+        video: `${earth}/ep5-scene4.mp4`,
+        full: `${earth}/ep5-scene4-full.mp4`,
+        poster: `${earth}/ep5-scene4.jpg`,
+        href: driveFile("1MjKzP_7mssSIiytCVmy9SfNT_jtQXIqt"),
+      },
+      {
+        label: "Ep 5 · Scene 5",
+        title: "The Goblet",
+        video: `${earth}/ep5-scene5.mp4`,
+        full: `${earth}/ep5-scene5-full.mp4`,
+        poster: `${earth}/ep5-scene5.jpg`,
+        href: driveFile("1rJO7aY0sNzxhjmqF3UUL6d3Pb52ude2p"),
+      },
+      {
+        label: "Scene 4",
+        title: "The Laboratory",
+        video: `${earth}/scene4-lab.mp4`,
+        full: `${earth}/scene4-lab-full.mp4`,
+        poster: `${earth}/scene4-lab.jpg`,
+        href: driveFile("11dUQwMfttsSLEue0OImKx2OBpn63ICYA"),
+      },
+    ],
     points: [
       "Directed multi-thread sequences including a nightclub party, a chase and a split-screen climax, keeping characters, vehicles and locations matched from shot to shot.",
       "Edited episodes to a locked-camera, hard-cut rhythm with diegetic sound, so AI shots play as one film.",
@@ -221,6 +299,22 @@ export const projects = [
     title: "Counting with Characters",
     type: "3D Animated Videos for Young Kids",
     client: "PhysicsWallah",
+    href: "https://drive.google.com/drive/folders/1ZDPnCUJ4QtVx6mR0XJ8r1YWgo16SGNEs?usp=sharing",
+    sceneAspect: "video",
+    scenes: [
+      ["Part 1", "Numbers Everywhere", "numbers"],
+      ["Part 2", "A Day at the Beach", "beach-trip"],
+      ["Part 3", "Shell Hunting", "shell-hunt"],
+      ["Part 4", "The Shell Stall", "shell-stall"],
+      ["Part 5", "New Friends", "new-friends"],
+    ].map(([label, title, file]) => ({
+      label: label!,
+      title: title!,
+      video: `${counting}/${file}.mp4`,
+      full: `${counting}/full.mp4`,
+      poster: `${counting}/${file}.jpg`,
+      href: driveFile("1RO_xBmi-PxLzIlh9fUe6uBc_RwM3mCF_"),
+    })),
     points: [
       "Produced Pixar-style 3D animated videos that teach counting to children in early grades, with original characters, bright scenes and simple, rhythmic pacing.",
       "Kept characters and settings consistent across videos and matched visuals with clear, child-friendly voiceover and sound.",
