@@ -21,7 +21,7 @@ export function Contact() {
 
       <FadeIn delay={0.15}>
         <p className="mx-auto mt-6 max-w-[620px] text-sm font-light uppercase tracking-wide text-muted-foreground sm:text-base">
-          Open to AI filmmaking, AI content, visual storytelling and video projects.
+          Have a film, series or ad you want made with AI? Email me the idea.
         </p>
       </FadeIn>
 

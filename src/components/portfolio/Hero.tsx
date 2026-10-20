@@ -64,7 +64,7 @@ export function Hero() {
             AI Filmmaker • AI Visual Creator • Video Editor
           </p>
           <p className="mt-2 text-[0.7rem] font-light leading-snug text-muted-foreground sm:text-xs">
-            Turning ideas into cinematic visuals with AI.
+            Now making Project Earth, a sci-fi series for PhysicsWallah.
           </p>
         </motion.div>
 
@@ -74,7 +74,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
           className="shrink-0 whitespace-nowrap"
         >
-          <ContactButton />
+          <ContactButton label="Start a Project" />
         </motion.div>
       </div>
     </section>

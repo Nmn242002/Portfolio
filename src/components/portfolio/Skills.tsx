@@ -17,7 +17,7 @@ export function Skills() {
           Skills
         </h2>
         <p className="mt-4 max-w-[560px] text-sm font-light uppercase tracking-wide text-muted-foreground sm:text-base">
-          Creative and technical skills I use to create AI-driven visual content.
+          What I do on a project, and the tools I use to do it.
         </p>
       </FadeIn>
 

@@ -40,7 +40,8 @@ export const navLinks = [
 export const skills = [
   {
     title: "AI FILMMAKING",
-    description: "Creating cinematic visual stories using generative AI and creative direction.",
+    description:
+      "Planning shots and scenes, and keeping characters and locations the same from shot to shot.",
     tags: [
       "AI Filmmaking",
       "Visual Storytelling",
@@ -54,7 +55,7 @@ export const skills = [
   },
   {
     title: "STORY & SCRIPT DEVELOPMENT",
-    description: "Shaping ideas into scripts, episodes and sequences that hold together on screen.",
+    description: "Writing scripts, episodes and dialogue, from the first pitch to the final draft.",
     tags: [
       "Scriptwriting",
       "Dialogue Writing",
@@ -67,7 +68,7 @@ export const skills = [
   },
   {
     title: "AI VIDEO & IMAGE GENERATION",
-    description: "Developing cinematic frames and bringing them into motion with generative AI.",
+    description: "Generating characters, sets and frames, then animating them into shots.",
     tags: [
       "AI Image Generation",
       "AI Video Generation",
@@ -88,8 +89,7 @@ export const skills = [
   },
   {
     title: "PROMPT ENGINEERING",
-    description:
-      "Writing precise prompts and reference rules that keep AI shots, characters and dialogue consistent.",
+    description: "Writing prompts and reference sheets so every shot matches the one before it.",
     tags: [
       "Prompt Engineering",
       "Scene Prompts",
@@ -102,7 +102,7 @@ export const skills = [
   },
   {
     title: "VIDEO EDITING",
-    description: "Editing AI-generated footage into coherent and engaging visual stories.",
+    description: "Cutting AI footage in Premiere Pro with hard cuts and sound-led pacing.",
     tags: [
       "Adobe Premiere Pro",
       "Video Editing",
@@ -118,14 +118,13 @@ export const skills = [
   },
   {
     title: "VISUAL DIRECTION",
-    description:
-      "Developing the visual language of a project through composition, lighting, camera language and atmosphere.",
+    description: "Setting the look of a project: composition, lighting, camera and mood.",
     tags: ["Composition", "Lighting", "Camera Language", "Mood", "Atmosphere", "Visual References"],
   },
   {
     title: "AI CREATIVE WORKFLOW",
     description:
-      "Combining generative AI tools and traditional post-production software to build efficient creative workflows.",
+      "Linking AI tools with editing software into a production pipeline a team can repeat.",
     tags: [
       "Generative AI",
       "AI Workflows",
@@ -136,7 +135,7 @@ export const skills = [
   },
   {
     title: "SOUND DESIGN",
-    description: "Shaping the sonic atmosphere of a scene and connecting sound with the edit.",
+    description: "Dialogue in Hindi, Hinglish and English, plus foley, SFX and licensed music.",
     tags: [
       "Sound Design",
       "Sound Sync",
@@ -151,8 +150,7 @@ export const skills = [
   },
   {
     title: "MOTION & ANIMATION",
-    description:
-      "Creating 3D animated character videos and bringing motion to interactive web experiences.",
+    description: "Making 3D animated character videos and animated websites.",
     tags: [
       "3D Animated Character Videos",
       "GSAP",
@@ -170,14 +168,14 @@ export const workflow = [
   "AI Image Generation",
   "AI Video Generation",
   "Editing",
-  "Final Cinematic Output",
+  "Final Cut",
 ];
 
 export const about = {
   intro:
-    "I’m Naman Jain — storyteller, prompt engineer, editor, sound designer and creative director, all in one AI filmmaker. I think in frames, and I make films with AI that feel like they were shot on a real set, building every layer myself, from the first idea to the final cut.",
+    "I’m Naman Jain, an AI filmmaker. I write the script, design the characters, generate the shots, record the dialogue, build the sound and cut the edit myself.",
   focus:
-    "Right now I’m bringing Project Earth to life at PhysicsWallah, an original sci-fi OTT series: designing its characters and worlds, writing its Hindi/Hinglish dialogue, shaping its sound and cutting it to a 2.39:1 cinematic frame. Give me a story, and I’ll give you something people can’t stop watching.",
+    "At PhysicsWallah I’m making Project Earth, an original sci-fi series for their OTT app. I design its characters and worlds, write its Hindi and Hinglish dialogue, and edit Episodes 2–5 in a 2.39:1 frame.",
 };
 
 export const heroPortrait = {
@@ -200,10 +198,8 @@ export const experience = [
     period: "May 2026 – Present",
     points: [
       "Building the AI production workflow for an original multi-episode sci-fi OTT series (Solivus / Project Earth), from scripts and character design to scene prompts, dialogue, sound and edit for Episodes 2–5.",
-      "Set up locked character and location reference sheets, a static-camera, hard-cut look at 2.39:1, a 15-second clip standard and continuity rules that hold across episodes.",
-      "Handle all audio: ElevenLabs dialogue scripts tagged in Roman and Devanagari, Voice Changer for more natural delivery, foley and SFX, and licensed BGM with every license number logged.",
-      "Follow strict production rules: only original characters, no copyrighted IP or music, natural skin texture and movement, and accurate period and regional detail in historical scenes.",
-      "Work with product and content teams to turn early pitch ideas into working AI prototypes.",
+      "Set up character and location reference sheets, a locked-camera, hard-cut look at 2.39:1 and continuity rules used across every episode.",
+      "Handle all audio: ElevenLabs dialogue in Roman and Devanagari scripts, Voice Changer for natural delivery, foley, SFX and licensed music.",
     ],
     tags: [
       "AI Filmmaking",
