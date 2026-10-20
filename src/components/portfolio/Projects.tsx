@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -93,11 +93,37 @@ function ScenePlayer({ scene }: { scene: Scene }) {
           {scene.title}
         </DialogTitle>
       </div>
+      <FullScene scene={scene} />
+    </DialogContent>
+  );
+}
+
+// Mounted only while the dialog is open. Starts the scene with sound forced on; if the
+// browser refuses unmuted playback, a button gives it the direct click it needs.
+function FullScene({ scene }: { scene: Scene }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [blocked, setBlocked] = useState(false);
+
+  const playWithSound = () => {
+    const video = ref.current;
+    if (!video) return;
+    video.muted = false;
+    video.volume = 1;
+    video.play().then(
+      () => setBlocked(false),
+      () => setBlocked(true),
+    );
+  };
+
+  useEffect(playWithSound, []);
+
+  return (
+    <div className="relative">
       <video
+        ref={ref}
         src={scene.full}
         poster={scene.poster}
         controls
-        autoPlay
         playsInline
         preload="auto"
         controlsList="nodownload noremoteplayback"
@@ -105,7 +131,18 @@ function ScenePlayer({ scene }: { scene: Scene }) {
         onContextMenu={(e) => e.preventDefault()}
         className="block max-h-[calc(100svh-8rem)] w-full bg-black object-contain"
       />
-    </DialogContent>
+      {blocked && (
+        <button
+          type="button"
+          onClick={playWithSound}
+          className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/50"
+        >
+          <span className="rounded-full border-2 border-film px-6 py-3 text-xs font-medium uppercase tracking-widest text-film">
+            ▶ Play with sound
+          </span>
+        </button>
+      )}
+    </div>
   );
 }
 
