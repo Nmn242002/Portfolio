@@ -130,3 +130,13 @@
     color: var(--color-ink);
   }
 }
+
+/* Slow push-in for the contact backdrop. */
+@keyframes slow-push {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}

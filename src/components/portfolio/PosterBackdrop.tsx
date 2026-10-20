@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 import { contactBackdrop } from "./data";
 
 /**
@@ -9,14 +7,14 @@ import { contactBackdrop } from "./data";
 export function PosterBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <motion.img
+      {/* CSS keyframes run on the compositor, with no per-frame JavaScript. */}
+      <img
         src={contactBackdrop.src}
         alt=""
+        loading="lazy"
+        decoding="async"
         draggable={false}
-        className="absolute inset-0 h-full w-full select-none object-cover opacity-50"
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.1 }}
-        transition={{ duration: 24, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        className="absolute inset-0 h-full w-full animate-[slow-push_24s_linear_infinite_alternate] select-none object-cover opacity-50 will-change-transform"
       />
       {/* Blend into the page and keep the headline legible. */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--background)_85%)]" />

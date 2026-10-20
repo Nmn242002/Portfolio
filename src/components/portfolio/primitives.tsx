@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, type MotionProps } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -35,6 +35,8 @@ export function FadeIn({
   );
 }
 
+// Moves the child toward the cursor by writing the transform directly, so mouse
+// movement never re-renders React; the frame loop only runs while the cursor is near.
 export function Magnet({
   children,
   className,
@@ -47,44 +49,51 @@ export function Magnet({
   padding?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [active, setActive] = useState(false);
+  const inner = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const inside =
-        e.clientX > rect.left - padding &&
-        e.clientX < rect.right + padding &&
-        e.clientY > rect.top - padding &&
-        e.clientY < rect.bottom + padding;
+    let frame = 0;
+    let active = false;
+    let pointer = { x: 0, y: 0 };
 
+    const apply = () => {
+      frame = 0;
+      const el = ref.current;
+      const child = inner.current;
+      if (!el || !child) return;
+      const rect = el.getBoundingClientRect();
+      const inside =
+        pointer.x > rect.left - padding &&
+        pointer.x < rect.right + padding &&
+        pointer.y > rect.top - padding &&
+        pointer.y < rect.bottom + padding;
       if (inside) {
-        setActive(true);
-        setOffset({ x: (e.clientX - cx) / strength, y: (e.clientY - cy) / strength });
-      } else {
-        setActive(false);
-        setOffset({ x: 0, y: 0 });
+        const x = (pointer.x - (rect.left + rect.width / 2)) / strength;
+        const y = (pointer.y - (rect.top + rect.height / 2)) / strength;
+        child.style.transition = "transform 0.3s ease-out";
+        child.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      } else if (active) {
+        child.style.transition = "transform 0.6s ease-in-out";
+        child.style.transform = "translate3d(0, 0, 0)";
       }
+      active = inside;
+    };
+
+    const onMove = (e: MouseEvent) => {
+      pointer = { x: e.clientX, y: e.clientY };
+      if (!frame) frame = requestAnimationFrame(apply);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(frame);
+    };
   }, [padding, strength]);
 
   return (
     <div ref={ref} className={className}>
-      <div
-        style={{
-          transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
-          transition: active ? "transform 0.3s ease-out" : "transform 0.6s ease-in-out",
-          willChange: "transform",
-        }}
-      >
+      <div ref={inner} style={{ willChange: "transform" }}>
         {children}
       </div>
     </div>

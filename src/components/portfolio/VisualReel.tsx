@@ -66,13 +66,12 @@ function ReelRow({
     };
     let previousY = window.scrollY;
     const isPaused = () => hovered.current || drag.current !== null;
+    // Visibility comes from an observer so scroll handlers never force a layout read.
+    let visible = false;
     const pageScroll = () => {
       const delta = window.scrollY - previousY;
       previousY = window.scrollY;
-      const box = el.getBoundingClientRect();
-      if (!isPaused() && box.bottom > 0 && box.top < window.innerHeight) {
-        scrollTo(position + delta * 0.35 * direction);
-      }
+      if (visible && !isPaused()) scrollTo(position + delta * 0.35 * direction);
     };
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
@@ -88,14 +87,23 @@ function ReelRow({
       // Adopt moves made elsewhere (drag, buttons, keys); snapping alone stays under a pixel.
       if (Math.abs(el.scrollLeft - position) > 1) position = el.scrollLeft;
       if (delta !== 0) scrollTo(position + delta);
-      animationFrame = requestAnimationFrame(animate);
+      animationFrame = visible ? requestAnimationFrame(animate) : 0;
     };
-    animationFrame = requestAnimationFrame(animate);
+    // Only run the loop while the row is on screen.
+    const seen = new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? false;
+      if (visible && !animationFrame) {
+        previousTime = performance.now();
+        animationFrame = requestAnimationFrame(animate);
+      }
+    });
+    seen.observe(el);
     el.addEventListener("scroll", normalize, { passive: true });
     el.addEventListener("wheel", wheel, { passive: false });
     window.addEventListener("scroll", pageScroll, { passive: true });
     return () => {
       resize.disconnect();
+      seen.disconnect();
       el.removeEventListener("scroll", normalize);
       el.removeEventListener("wheel", wheel);
       window.removeEventListener("scroll", pageScroll);
@@ -187,6 +195,7 @@ function ReelRow({
                 alt={copy === 1 ? image.alt : ""}
                 aria-hidden={copy !== 1}
                 loading="lazy"
+                decoding="async"
                 draggable={false}
                 width={1792}
                 height={768}

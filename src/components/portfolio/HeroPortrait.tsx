@@ -63,6 +63,7 @@ export function HeroPortrait() {
           style={{
             x: glowX,
             y: glowY,
+            willChange: "transform",
             background:
               "radial-gradient(circle, color-mix(in oklch, var(--film) 26%, transparent) 0%, color-mix(in oklch, var(--film) 8%, transparent) 45%, transparent 70%)",
           }}
@@ -74,12 +75,15 @@ export function HeroPortrait() {
         width={heroPortrait.width}
         height={heroPortrait.height}
         draggable={false}
+        fetchPriority="high"
         className="relative h-full w-auto max-w-full select-none object-contain object-bottom"
         style={{
           x,
           y,
           rotateX,
           rotateY,
+          // Own layer, so tilting never repaints the masked, shadowed image.
+          willChange: "transform",
           WebkitMaskImage: FEATHER,
           maskImage: FEATHER,
           WebkitMaskComposite: "source-in",
