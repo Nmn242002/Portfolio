@@ -319,6 +319,6 @@ export const projects: Project[] = [
 ];
 
 export const contactLinks = [
-  { label: "Email", value: "jainnaman242002@gmail.com", href: "mailto:jainnaman242002@gmail.com" },
+  { label: "Email", value: "filmmakernaman@gmail.com", href: "mailto:filmmakernaman@gmail.com" },
   { label: "Location", value: "Delhi, India", href: "" },
 ];
