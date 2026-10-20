@@ -228,6 +228,8 @@ export type Project = {
     video: string;
     poster: string;
     full: string;
+    /** Seconds into `full` where this scene begins, when several scenes share one video. */
+    start?: number;
     href: string;
   }[];
   /** Frame of the scene previews: 2.39:1 cinemascope by default, or 16:9 video. */
@@ -297,17 +299,21 @@ export const projects: Project[] = [
     client: "PhysicsWallah",
     href: "https://drive.google.com/drive/folders/1ZDPnCUJ4QtVx6mR0XJ8r1YWgo16SGNEs?usp=sharing",
     sceneAspect: "video",
-    scenes: [
-      ["Part 1", "Numbers Everywhere", "numbers"],
-      ["Part 2", "A Day at the Beach", "beach-trip"],
-      ["Part 3", "Shell Hunting", "shell-hunt"],
-      ["Part 4", "The Shell Stall", "shell-stall"],
-      ["Part 5", "New Friends", "new-friends"],
-    ].map(([label, title, file]) => ({
-      label: label!,
-      title: title!,
+    // All five parts are cuts of one 5-minute video; `start` is the shot change where each begins.
+    scenes: (
+      [
+        ["Part 1", "Numbers Everywhere", "numbers", 0],
+        ["Part 2", "A Day at the Beach", "beach-trip", 27.8],
+        ["Part 3", "Shell Hunting", "shell-hunt", 81.9],
+        ["Part 4", "The Shell Stall", "shell-stall", 114],
+        ["Part 5", "New Friends", "new-friends", 228.9],
+      ] as const
+    ).map(([label, title, file, start]) => ({
+      label,
+      title,
       video: `${counting}/${file}.mp4`,
       full: `${counting}/full.mp4`,
+      start,
       poster: `${counting}/${file}.jpg`,
       href: driveFile("1RO_xBmi-PxLzIlh9fUe6uBc_RwM3mCF_"),
     })),

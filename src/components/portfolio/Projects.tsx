@@ -121,7 +121,8 @@ function FullScene({ scene }: { scene: Scene }) {
     <div className="relative">
       <video
         ref={ref}
-        src={scene.full}
+        // A media fragment opens shared videos at this scene's first shot.
+        src={scene.start ? `${scene.full}#t=${scene.start}` : scene.full}
         poster={scene.poster}
         controls
         playsInline
