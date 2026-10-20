@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { Volume2, VolumeX } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,13 +11,14 @@ import { cn } from "@/lib/utils";
 import { FadeIn, ProjectButton } from "./primitives";
 import { projects, type Project } from "./data";
 
-// Plays a muted preview only while it is on screen, and never for reduced-motion users.
+// Plays the preview only while it is on screen. Not gated on prefers-reduced-motion,
+// which Windows reports whenever animation effects are off.
 function useInViewAutoplay() {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const video = ref.current;
-    if (!video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!video) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) void video.play().catch(() => {});
@@ -43,39 +45,75 @@ function SceneTile({
   className?: string;
 }) {
   const ref = useInViewAutoplay();
+  const [audible, setAudible] = useState(false);
+
+  // Browsers only allow sound after the visitor has clicked or tapped the page;
+  // if unmuting is refused, fall back to the muted loop.
+  const setSound = (on: boolean) => {
+    const video = ref.current;
+    if (!video) return;
+    if (!on || !navigator.userActivation?.hasBeenActive) {
+      video.muted = true;
+      setAudible(false);
+      return;
+    }
+    video.muted = false;
+    void video.play().then(
+      () => setAudible(true),
+      () => {
+        video.muted = true;
+        setAudible(false);
+        void video.play().catch(() => {});
+      },
+    );
+  };
 
   return (
-    <Dialog>
-      <DialogTrigger
-        aria-label={`Watch ${scene.label}: ${scene.title}`}
-        className={cn(
-          "group relative block w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-black text-left transition-colors duration-500 hover:border-film/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-film",
-          className,
-        )}
+    <Dialog onOpenChange={(open) => open && setSound(false)}>
+      <div
+        className={cn("group relative", className)}
+        onPointerEnter={(e) => e.pointerType === "mouse" && setSound(true)}
+        onPointerLeave={() => setSound(false)}
       >
-        <video
-          ref={ref}
-          src={scene.video}
-          poster={scene.poster}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden
-          className={cn(
-            aspect === "video" ? "aspect-video" : "aspect-[2.39/1]",
-            "w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100",
-          )}
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-4 pb-3 pt-10">
-          <p className="text-[0.55rem] font-medium uppercase tracking-[0.3em] text-film-dim">
-            {scene.label}
-          </p>
-          <p className="mt-1 text-xs font-semibold uppercase tracking-tight text-film sm:text-sm">
-            {scene.title}
-          </p>
-        </div>
-      </DialogTrigger>
+        <DialogTrigger
+          aria-label={`Watch ${scene.label}: ${scene.title}`}
+          className="relative block w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-black text-left transition-colors duration-500 hover:border-film/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-film"
+        >
+          <video
+            ref={ref}
+            src={scene.video}
+            poster={scene.poster}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden
+            className={cn(
+              aspect === "video" ? "aspect-video" : "aspect-[2.39/1]",
+              "w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100",
+            )}
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-4 pb-3 pt-10">
+            <p className="text-[0.55rem] font-medium uppercase tracking-[0.3em] text-film-dim">
+              {scene.label}
+            </p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-tight text-film sm:text-sm">
+              {scene.title}
+            </p>
+          </div>
+        </DialogTrigger>
+        <button
+          type="button"
+          aria-label={
+            audible ? `Mute ${scene.title} preview` : `Play ${scene.title} preview with sound`
+          }
+          aria-pressed={audible}
+          onClick={() => setSound(!audible)}
+          className="absolute right-3 top-3 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-film/30 bg-black/60 text-film backdrop-blur-sm transition-opacity duration-300 hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-film"
+        >
+          {audible ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+        </button>
+      </div>
       <ScenePlayer scene={scene} />
     </Dialog>
   );
