@@ -1,5 +1,4 @@
-import { Volume2, VolumeX } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -45,36 +44,10 @@ function SceneTile({
   className?: string;
 }) {
   const ref = useInViewAutoplay();
-  const [audible, setAudible] = useState(false);
-
-  // Browsers only allow sound after the visitor has clicked or tapped the page;
-  // if unmuting is refused, fall back to the muted loop.
-  const setSound = (on: boolean) => {
-    const video = ref.current;
-    if (!video) return;
-    if (!on || !navigator.userActivation?.hasBeenActive) {
-      video.muted = true;
-      setAudible(false);
-      return;
-    }
-    video.muted = false;
-    void video.play().then(
-      () => setAudible(true),
-      () => {
-        video.muted = true;
-        setAudible(false);
-        void video.play().catch(() => {});
-      },
-    );
-  };
 
   return (
-    <Dialog onOpenChange={(open) => open && setSound(false)}>
-      <div
-        className={cn("group relative", className)}
-        onPointerEnter={(e) => e.pointerType === "mouse" && setSound(true)}
-        onPointerLeave={() => setSound(false)}
-      >
+    <Dialog>
+      <div className={cn("group relative", className)}>
         <DialogTrigger
           aria-label={`Watch ${scene.label}: ${scene.title}`}
           className="relative block w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-black text-left transition-colors duration-500 hover:border-film/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-film"
@@ -102,17 +75,6 @@ function SceneTile({
             </p>
           </div>
         </DialogTrigger>
-        <button
-          type="button"
-          aria-label={
-            audible ? `Mute ${scene.title} preview` : `Play ${scene.title} preview with sound`
-          }
-          aria-pressed={audible}
-          onClick={() => setSound(!audible)}
-          className="absolute right-3 top-3 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-film/30 bg-black/60 text-film backdrop-blur-sm transition-opacity duration-300 hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-film"
-        >
-          {audible ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-        </button>
       </div>
       <ScenePlayer scene={scene} />
     </Dialog>
