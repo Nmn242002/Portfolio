@@ -7,6 +7,7 @@ import { Experience } from "@/components/portfolio/Experience";
 import { Skills } from "@/components/portfolio/Skills";
 import { Projects } from "@/components/portfolio/Projects";
 import { Contact } from "@/components/portfolio/Contact";
+import { useScrollHoverGuard } from "@/hooks/use-scroll-hover-guard";
 
 const title = "Naman Jain | AI Filmmaker";
 const description =
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  useScrollHoverGuard();
   return (
     <main className="min-h-screen bg-background" style={{ overflowX: "clip" }}>
       <Hero />

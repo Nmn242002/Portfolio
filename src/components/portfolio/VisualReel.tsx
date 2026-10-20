@@ -73,10 +73,14 @@ function ReelRow({
       previousY = window.scrollY;
       if (visible && !isPaused()) scrollTo(position + delta * 0.35 * direction);
     };
+    // Horizontal swipes (or Shift + wheel) move the reel; vertical wheel keeps scrolling
+    // the page, so the reel never traps page scroll under the cursor.
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
+      const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+      if (!horizontal && !event.shiftKey) return;
       event.preventDefault();
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      const delta = horizontal ? event.deltaX : event.deltaY;
       scrollTo(position + delta * (event.deltaMode === 1 ? 16 : 1));
     };
     let animationFrame = 0;

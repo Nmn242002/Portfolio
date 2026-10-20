@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 import { FadeIn } from "./primitives";
 import { skills } from "./data";
 
@@ -24,11 +22,9 @@ export function Skills() {
       <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {skills.map((skill, i) => (
           <FadeIn key={skill.title} delay={i * 0.06}>
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-              className="group h-full rounded-3xl border border-border bg-card/50 p-6 transition-colors duration-500 hover:border-film/50 hover:film-glow"
-            >
+            {/* Hover scale and glow are CSS; the glow is pre-drawn on a pseudo-element and
+                only faded in, so hovering never repaints a large blurred shadow. */}
+            <div className="group relative h-full rounded-3xl border border-border bg-card/50 p-6 transition-[scale,border-color] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] after:pointer-events-none after:absolute after:inset-0 after:rounded-3xl after:opacity-0 after:shadow-[var(--shadow-glow)] after:transition-opacity after:duration-500 hover:scale-[1.02] hover:border-film/50 hover:after:opacity-100">
               <span className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -48,7 +44,7 @@ export function Skills() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </FadeIn>
         ))}
       </div>

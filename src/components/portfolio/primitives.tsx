@@ -1,10 +1,12 @@
-import { motion, useScroll, useTransform, type MotionProps } from "framer-motion";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-const EASE = [0.25, 0.1, 0.25, 1] as const;
+const EASE_CSS = "cubic-bezier(0.25, 0.1, 0.25, 1)";
 
+// Reveals once on entering the viewport with a CSS transition, which the browser runs
+// off the main thread. The reveal writes styles directly, so it never re-renders React.
 export function FadeIn({
   children,
   className,
@@ -12,7 +14,6 @@ export function FadeIn({
   duration = 0.7,
   x = 0,
   y = 30,
-  ...rest
 }: {
   children: ReactNode;
   className?: string;
@@ -20,18 +21,39 @@ export function FadeIn({
   duration?: number;
   x?: number;
   y?: number;
-} & MotionProps) {
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "50px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const timing = `${duration}s ${EASE_CSS} ${delay}s`;
   return (
-    <motion.div
+    <div
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, x, y }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "50px", amount: 0 }}
-      transition={{ delay, duration, ease: EASE }}
-      {...rest}
+      style={{
+        opacity: 0,
+        transform: `translate3d(${x}px, ${y}px, 0)`,
+        transition: `opacity ${timing}, transform ${timing}`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -100,6 +122,9 @@ export function Magnet({
   );
 }
 
+// Words brighten as the paragraph scrolls through view. Scroll progress is written to one
+// CSS variable on the paragraph and each word derives its opacity from it, instead of
+// animating every word separately.
 export function AnimatedText({ text, className }: { text: string; className?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
@@ -107,36 +132,26 @@ export function AnimatedText({ text, className }: { text: string; className?: st
     offset: ["start 1", "end 0.65"],
   });
   const words = text.split(" ");
+  const setReveal = (progress: number) =>
+    ref.current?.style.setProperty("--reveal", String(progress * words.length));
+
+  useEffect(() => {
+    setReveal(scrollYProgress.get());
+  });
+  useMotionValueEvent(scrollYProgress, "change", setReveal);
 
   return (
-    <p ref={ref} className={className}>
-      {words.map((word, i) => {
-        const start = i / words.length;
-        const end = start + 1 / words.length;
-        return (
-          <Word key={`${word}-${i}`} progress={scrollYProgress} range={[start, end]}>
-            {word}
-          </Word>
-        );
-      })}
+    <p ref={ref} className={className} style={{ "--reveal": 0 } as CSSProperties}>
+      {words.map((word, i) => (
+        <span
+          key={`${word}-${i}`}
+          className="relative mr-[0.28em] inline-block"
+          style={{ opacity: `clamp(0.2, calc(0.2 + 0.8 * (var(--reveal) - ${i})), 1)` }}
+        >
+          {word}
+        </span>
+      ))}
     </p>
-  );
-}
-
-function Word({
-  children,
-  progress,
-  range,
-}: {
-  children: string;
-  progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  range: [number, number];
-}) {
-  const opacity = useTransform(progress, range, [0.2, 1]);
-  return (
-    <span className="relative mr-[0.28em] inline-block">
-      <motion.span style={{ opacity }}>{children}</motion.span>
-    </span>
   );
 }
 
