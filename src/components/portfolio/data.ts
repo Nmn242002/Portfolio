@@ -228,7 +228,7 @@ export type Project = {
     video: string;
     poster: string;
     full: string;
-    /** Seconds into `full` where this scene begins, when several scenes share one video. */
+    /** Seconds into `full` where playback begins (shared videos, or to skip a weak opening). */
     start?: number;
     href: string;
   }[];
@@ -285,6 +285,7 @@ export const projects: Project[] = [
         video: `${earth}/scene4-lab.mp4`,
         full: `${earth}/scene4-lab-full.mp4`,
         poster: `${earth}/scene4-lab.jpg`,
+        start: 11,
         href: driveFile("11dUQwMfttsSLEue0OImKx2OBpn63ICYA"),
       },
     ],
