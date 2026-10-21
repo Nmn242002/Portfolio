@@ -285,7 +285,7 @@ export const projects: Project[] = [
         video: `${earth}/scene4-lab.mp4`,
         full: `${earth}/scene4-lab-full.mp4`,
         poster: `${earth}/scene4-lab.jpg`,
-        start: 11,
+        start: 4,
         href: driveFile("11dUQwMfttsSLEue0OImKx2OBpn63ICYA"),
       },
     ],
