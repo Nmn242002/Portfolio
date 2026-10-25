@@ -15,12 +15,9 @@ export function Hero() {
         transition={{ duration: 0.7, ease: EASE }}
         className="relative z-20 flex flex-col items-start justify-between gap-3 px-6 pt-6 sm:flex-row sm:items-center md:px-10 md:pt-8"
       >
-        <a
-          href="#contact"
-          className="text-sm font-medium uppercase tracking-wider text-film transition-opacity duration-200 hover:opacity-70 md:text-lg lg:text-[1.2rem]"
-        >
-          Open to work
-        </a>
+        <span className="text-sm font-medium uppercase tracking-wider text-film md:text-lg lg:text-[1.2rem]">
+          Naman
+        </span>
         <div className="flex w-full justify-between gap-3 sm:w-auto sm:gap-6 md:gap-8">
           {navLinks.map((link) => (
             <a

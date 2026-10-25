@@ -1,96 +1,218 @@
-import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-
+import { useEffect, useRef, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { GlitchTitle } from "./film";
-import { FadeIn } from "./primitives";
+import { FadeIn, ProjectButton } from "./primitives";
 import { projects, type Project } from "./data";
 
-// Selected work on cream paper: one ticket per project, each opening its project page.
+// Plays the preview only while it is on screen. Not gated on prefers-reduced-motion,
+// which Windows reports whenever animation effects are off.
+function useInViewAutoplay() {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) void video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
+
+type Scene = NonNullable<Project["scenes"]>[number];
+
+function SceneTile({
+  scene,
+  aspect = "wide",
+  className,
+}: {
+  scene: Scene;
+  aspect?: Project["sceneAspect"];
+  className?: string;
+}) {
+  const ref = useInViewAutoplay();
+
+  return (
+    <Dialog>
+      <div className={cn("group relative", className)}>
+        <DialogTrigger
+          aria-label={`Watch ${scene.label}: ${scene.title}`}
+          className="relative block w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-black text-left transition-colors duration-500 hover:border-film/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-film"
+        >
+          <video
+            ref={ref}
+            src={scene.video}
+            poster={scene.poster}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden
+            className={cn(
+              aspect === "video" ? "aspect-video" : "aspect-[2.39/1]",
+              "w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100",
+            )}
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-4 pb-3 pt-10">
+            <p className="text-[0.55rem] font-medium uppercase tracking-[0.3em] text-film-dim">
+              {scene.label}
+            </p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-tight text-film sm:text-sm">
+              {scene.title}
+            </p>
+          </div>
+        </DialogTrigger>
+      </div>
+      <ScenePlayer scene={scene} />
+    </Dialog>
+  );
+}
+
+// Plays the full scene in-page from the site's own files, without a download control.
+function ScenePlayer({ scene }: { scene: Scene }) {
+  return (
+    <DialogContent className="max-w-[min(1100px,calc(100vw-2rem))] gap-0 overflow-hidden rounded-2xl border-border bg-black p-0 sm:rounded-2xl">
+      <div className="flex items-baseline gap-3 px-5 py-4 pr-12">
+        <DialogDescription className="text-[0.55rem] font-medium uppercase tracking-[0.3em] text-film-dim">
+          {scene.label}
+        </DialogDescription>
+        <DialogTitle className="text-sm font-semibold uppercase tracking-tight text-film">
+          {scene.title}
+        </DialogTitle>
+      </div>
+      <FullScene scene={scene} />
+    </DialogContent>
+  );
+}
+
+// Mounted only while the dialog is open. Starts the scene with sound forced on; if the
+// browser refuses unmuted playback, a button gives it the direct click it needs.
+function FullScene({ scene }: { scene: Scene }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [blocked, setBlocked] = useState(false);
+
+  const playWithSound = () => {
+    const video = ref.current;
+    if (!video) return;
+    video.muted = false;
+    video.volume = 1;
+    video.play().then(
+      () => setBlocked(false),
+      () => setBlocked(true),
+    );
+  };
+
+  useEffect(playWithSound, []);
+
+  return (
+    <div className="relative">
+      <video
+        ref={ref}
+        // A media fragment opens shared videos at this scene's first shot.
+        src={scene.start ? `${scene.full}#t=${scene.start}` : scene.full}
+        poster={scene.poster}
+        controls
+        playsInline
+        preload="auto"
+        controlsList="nodownload noremoteplayback"
+        disablePictureInPicture
+        onContextMenu={(e) => e.preventDefault()}
+        className="block max-h-[calc(100svh-8rem)] w-full bg-black object-contain"
+      />
+      {blocked && (
+        <button
+          type="button"
+          onClick={playWithSound}
+          className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/50"
+        >
+          <span className="rounded-full border-2 border-film px-6 py-3 text-xs font-medium uppercase tracking-widest text-film">
+            ▶ Play with sound
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+// Two wide tiles on top, three below on large screens; the last tile fills the row on tablets.
+const sceneSpan = (i: number, total: number) =>
+  cn(
+    i < 2 ? "lg:col-span-3" : "lg:col-span-2",
+    i === total - 1 && total % 2 === 1 && "sm:col-span-2",
+  );
+
 export function Projects() {
   return (
-    <section
-      id="projects"
-      className="bg-cream px-[clamp(0.75rem,2vw,2rem)] py-20 text-paper-ink md:py-28"
-    >
-      <FadeIn className="flex flex-wrap items-end justify-between gap-4 border-b border-paper-ink pb-4">
-        <div>
-          <p className="micro">Showcase · {projects.length} projects</p>
-          <h2 className="reel-title mt-3 text-[clamp(3.5rem,11vw,10rem)]">Selected Work</h2>
-        </div>
-        <p className="max-w-[280px] font-reel text-xs font-medium uppercase leading-snug opacity-70">
-          Every scene, credit and note from each production.
-        </p>
+    <section id="projects" className="bg-background px-5 py-20 sm:px-8 md:px-10">
+      <FadeIn>
+        <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">
+          Selected Work
+        </h2>
       </FadeIn>
-      <div className="mt-8 space-y-4 md:mt-12 md:space-y-5">
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
         {projects.map((project, i) => (
-          <FadeIn key={project.slug} delay={i * 0.06}>
-            <WorkTicket project={project} index={i} />
+          <FadeIn
+            key={project.title}
+            delay={i * 0.06}
+            className={project.scenes ? "md:col-span-2" : ""}
+          >
+            <article className="h-full rounded-3xl border border-border bg-card/50 p-6 transition-colors duration-500 hover:border-film/50">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <span className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")} · {project.type}
+                </span>
+                <span className="text-[0.6rem] font-medium uppercase tracking-[0.3em] text-muted-foreground">
+                  {project.client}
+                </span>
+              </div>
+              <h3 className="mt-3 text-lg font-semibold uppercase tracking-tight text-film sm:text-xl">
+                {project.title}
+              </h3>
+              {project.scenes ? (
+                <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
+                  {project.scenes.map((scene, s) => (
+                    <SceneTile
+                      key={scene.video}
+                      scene={scene}
+                      aspect={project.sceneAspect}
+                      className={sceneSpan(s, project.scenes!.length)}
+                    />
+                  ))}
+                </div>
+              ) : null}
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
+                {project.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              {project.href ? (
+                <ProjectButton
+                  href={project.href}
+                  label={
+                    new Set(project.scenes?.map((scene) => scene.href)).size > 1
+                      ? "Watch All Scenes"
+                      : "Watch Full Video"
+                  }
+                  className="mt-6"
+                />
+              ) : null}
+            </article>
           </FadeIn>
         ))}
       </div>
     </section>
-  );
-}
-
-export function WorkTicket({
-  project,
-  index,
-  label = "Explore",
-  className,
-}: {
-  project: Project;
-  index: number;
-  label?: string;
-  className?: string;
-}) {
-  return (
-    <Link
-      to="/work/$slug"
-      params={{ slug: project.slug }}
-      data-cursor="Open"
-      className={cn(
-        "glitch-host group grid grid-cols-1 gap-[3px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cinema sm:grid-cols-[minmax(150px,0.28fr)_1fr]",
-        className,
-      )}
-    >
-      <div className="ticket flex flex-col justify-between gap-6 border border-dashed border-paper-ink/40 bg-cream p-4 sm:min-h-[220px]">
-        <div>
-          <p className="micro">No. {String(index + 1).padStart(2, "0")}</p>
-          <p className="reel-title mt-2 text-xl">{project.type}</p>
-        </div>
-        <span className="flex items-center gap-2 font-reel text-[0.6rem] font-bold uppercase tracking-[0.18em]">
-          {project.client}
-          {project.year ? ` · ${project.year}` : ""}
-        </span>
-      </div>
-      <div className="ticket relative grid min-h-[260px] grid-cols-1 overflow-hidden bg-paper-ink text-cream md:min-h-[clamp(260px,32vw,420px)] md:grid-cols-[0.42fr_0.58fr]">
-        <div className="relative z-10 flex flex-col justify-between gap-8 p-5 md:p-6">
-          <div>
-            <p className="micro opacity-70">{project.role}</p>
-            <GlitchTitle
-              as="h3"
-              text={project.short}
-              className="mt-3 text-[clamp(2.25rem,4.5vw,4.5rem)]"
-            />
-            <p className="micro mt-4 opacity-70">
-              {project.scenes?.length ?? 0} scenes · {project.format}
-            </p>
-          </div>
-          <span className="flex items-center gap-2 font-reel text-[0.6rem] font-bold uppercase tracking-[0.18em]">
-            {label}
-            <span className="flex size-5 items-center justify-center rounded-full bg-cream text-paper-ink transition-transform duration-300 group-hover:translate-x-1">
-              <ArrowRight className="size-3" aria-hidden />
-            </span>
-          </span>
-        </div>
-        <img
-          src={project.cover}
-          alt=""
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover opacity-50 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-70 md:relative md:opacity-90 md:group-hover:opacity-100"
-        />
-      </div>
-    </Link>
   );
 }
