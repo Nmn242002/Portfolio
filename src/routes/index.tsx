@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Hero } from "@/components/portfolio/Hero";
-import { VisualReel } from "@/components/portfolio/VisualReel";
-import { About } from "@/components/portfolio/About";
-import { Experience } from "@/components/portfolio/Experience";
-import { Skills } from "@/components/portfolio/Skills";
-import { Projects } from "@/components/portfolio/Projects";
-import { Contact } from "@/components/portfolio/Contact";
-import { useScrollHoverGuard } from "@/hooks/use-scroll-hover-guard";
+import { CineHero } from "@/components/portfolio/cine/CineHero";
+import { About } from "@/components/portfolio/cine/About";
+import { Finale } from "@/components/portfolio/cine/Finale";
+import { Record } from "@/components/portfolio/cine/Record";
+import { SiteHeader } from "@/components/portfolio/cine/SiteHeader";
+import { StatsBand } from "@/components/portfolio/cine/StatsBand";
+import { Projects } from "@/components/portfolio/cine/Projects";
+import { FilmCursor } from "@/components/portfolio/film";
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 
 const title = "Naman Jain | AI Filmmaker";
 const description =
@@ -28,16 +29,19 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  useScrollHoverGuard();
+  useSmoothScroll();
   return (
-    <main className="min-h-screen bg-background" style={{ overflowX: "clip" }}>
-      <Hero />
-      <VisualReel />
-      <About />
-      <Experience />
-      <Skills />
-      <Projects />
-      <Contact />
-    </main>
+    <>
+      <SiteHeader />
+      <FilmCursor />
+      <main className="min-h-screen bg-night" style={{ overflowX: "clip" }}>
+        <CineHero />
+        <StatsBand />
+        <Record />
+        <About />
+        <Projects />
+        <Finale />
+      </main>
+    </>
   );
 }

@@ -11,16 +11,14 @@ import jungle from "@/assets/reel/jungle_traveller_robot.webp";
 import portal from "@/assets/reel/robotic_hand_portal.webp";
 import scholar from "@/assets/reel/desk_scholar_portrait.webp";
 
-export type ReelImage = { src: string; alt: string };
-export const reelRowOne: ReelImage[] = [
+/** Stills from my projects, shown one per frame on the hero's film strip. */
+export const filmFrames = [
   { src: robotGolden, alt: "Armoured robot beside a glowing campfire" },
   { src: robotCampfire, alt: "Small robot facing a campfire in the forest" },
   { src: solivus, alt: "Man in tactical gear seated on a log beside a forest campfire at night" },
   { src: slab, alt: "Slab avalanche descending a mountain slope" },
   { src: golden, alt: "Avalanche in golden mountain sunlight" },
   { src: snow, alt: "Close-up of snow crystals in an avalanche" },
-];
-export const reelRowTwo: ReelImage[] = [
   { src: throne, alt: "Cloaked figure standing before a futuristic throne" },
   { src: hand, alt: "Close-up of a ringed hand in a futuristic chamber" },
   { src: footsteps, alt: "Boots and a flowing cloak crossing an illuminated floor" },
@@ -161,22 +159,27 @@ export const skills = [
   },
 ];
 
-export const workflow = [
-  "Idea",
-  "Concept",
-  "Visual Development",
-  "AI Image Generation",
-  "AI Video Generation",
-  "Editing",
-  "Final Cut",
-];
-
 export const about = {
+  hello: "Hi, I’m Naman, an AI filmmaker who’s also the",
+  /** Ends the hello line, in red. */
+  role: "editor",
+  /** The intro, split by craft so the page can drop a small picture after each one. */
+  crafts: [
+    { lead: "I write the", noun: "script", chip: "pen" },
+    { lead: "design the", noun: "characters", chip: "faces" },
+    { lead: "generate the", noun: "shots", chip: "still" },
+    { lead: "record the", noun: "dialogue", chip: "mic" },
+    { lead: "build the", noun: "sound", chip: "wave" },
+    { lead: "and cut the", noun: "edit", chip: "cut" },
+  ],
+  outro: "myself.",
   intro:
     "I’m Naman Jain, an AI filmmaker. I write the script, design the characters, generate the shots, record the dialogue, build the sound and cut the edit myself.",
   focus:
     "At PhysicsWallah I’m making Project Earth, an original sci-fi series for their OTT app. I design its characters and worlds, write its Hindi and Hinglish dialogue, and edit Episodes 2–5 in a 2.39:1 frame.",
-};
+  now: "Making Project Earth at PhysicsWallah",
+  place: "Delhi",
+} as const;
 
 export const heroPortrait = {
   src: "/naman-portrait.webp",
@@ -234,6 +237,18 @@ export type Project = {
   }[];
   /** Frame of the scene previews: 2.39:1 cinemascope by default, or 16:9 video. */
   sceneAspect?: "wide" | "video";
+  /** URL segment of the project page, `/work/$slug`. */
+  slug: string;
+  /** Short title for tickets and the stacked showreel cards. */
+  short: string;
+  role: string;
+  format: string;
+  year?: string;
+  cover: string;
+  /** Ruled facts on the project page credits grid. */
+  credits: { label: string; value: string }[];
+  /** Three craft facts in the right column of each showreel card. */
+  highlights: { label: string; value: string }[];
 };
 
 const earth = "/projects/project-earth";
@@ -245,6 +260,25 @@ export const projects: Project[] = [
     title: "Solivus / Project Earth",
     type: "AI Sci-fi OTT Series",
     client: "PhysicsWallah",
+    slug: "project-earth",
+    short: "Project Earth",
+    role: "Writer · Director · Editor",
+    format: "2.39:1",
+    year: "2026",
+    cover: `${earth}/key-art.webp`,
+    credits: [
+      { label: "Script & Dialogue", value: "Naman Jain" },
+      { label: "Characters & Worlds", value: "Naman Jain" },
+      { label: "Sound", value: "Naman Jain" },
+      { label: "Editor · Eps 2–5", value: "Naman Jain" },
+      { label: "Client", value: "PhysicsWallah" },
+      { label: "Platform", value: "PW OTT App" },
+    ],
+    highlights: [
+      { label: "Frame", value: "2.39:1 anamorphic" },
+      { label: "Edit", value: "Locked camera, hard cuts" },
+      { label: "Dialogue", value: "Hindi & Hinglish" },
+    ],
     href: "https://drive.google.com/drive/folders/15q7G40GI8OFfCkTVKiDRQSXakhVzP5Yi?usp=sharing",
     scenes: [
       {
@@ -298,6 +332,22 @@ export const projects: Project[] = [
     title: "Counting with Characters",
     type: "3D Animated Videos for Young Kids",
     client: "PhysicsWallah",
+    slug: "counting-with-characters",
+    short: "Counting with Characters",
+    role: "Producer",
+    format: "16:9",
+    cover: `${counting}/beach-trip.jpg`,
+    credits: [
+      { label: "Producer", value: "Naman Jain" },
+      { label: "Visuals & Sound", value: "Naman Jain" },
+      { label: "Client", value: "PhysicsWallah" },
+      { label: "Audience", value: "Early Grades" },
+    ],
+    highlights: [
+      { label: "Look", value: "Pixar-style 3D" },
+      { label: "Lesson", value: "Counting for early grades" },
+      { label: "Sound", value: "Child-friendly voiceover" },
+    ],
     href: "https://drive.google.com/drive/folders/1ZDPnCUJ4QtVx6mR0XJ8r1YWgo16SGNEs?usp=sharing",
     sceneAspect: "video",
     // All five parts are cuts of one 5-minute video; `start` is the shot change where each begins.
@@ -327,5 +377,64 @@ export const projects: Project[] = [
 
 export const contactLinks = [
   { label: "Email", value: "filmmakernaman@gmail.com", href: "mailto:filmmakernaman@gmail.com" },
+  { label: "WhatsApp", value: "+91 92113 77027", href: "https://wa.me/919211377027" },
   { label: "Location", value: "Delhi, India", href: "" },
 ];
+
+export type Scene = NonNullable<Project["scenes"]>[number];
+
+/** Every scene in project order: the cards of the stacked showreel. */
+export const showreel = projects.flatMap((project) =>
+  (project.scenes ?? []).map((scene) => ({ project, scene })),
+);
+
+/** Landing-page copy, laid out like a film release page (see DESIGN.md). */
+export const cine = {
+  genres: ["AI Film", "Sci-Fi", "3D Animation"],
+  release: "Now making · Project Earth",
+  credits: ["Writer", "Director", "Sound", "Editor"],
+  above: "AI",
+  year: "2026",
+  story: {
+    label: "Naman Jain · Story",
+    lead: "Part A",
+    text: "An AI filmmaker in Delhi who writes, designs, generates, voices and cuts every shot himself.",
+  },
+  production: { label: "Production", studio: "PhysicsWallah" },
+  rating: 4,
+  stats: [
+    { label: "Scenes", value: "Hand Built" },
+    { label: "Episodes", value: "Series Ready" },
+    { label: "Frame", value: "Cinema Wide" },
+  ],
+  quote: "I write the script, design the characters, generate the shots and cut the edit myself.",
+  finale: { label: "Available for projects", title: "Naman Jain", place: "Delhi", year: "2026" },
+  // Side A of the record: each track is pressed into the disc as a ring of text and
+  // captioned beside it while it plays.
+  record: [
+    {
+      kicker: "Directed by",
+      title: "Naman Jain",
+      ring: "Directed by Naman Jain ✦ ",
+      text: "An AI filmmaker in Delhi.",
+    },
+    {
+      kicker: "Every role",
+      title: "Writer · Director · Sound · Editor",
+      ring: "Writer • Director • Sound • Editor • ",
+      text: "Writes, designs, generates, voices and cuts every shot himself.",
+    },
+    {
+      kicker: "Now showing",
+      title: "Project Earth",
+      ring: "Project Earth • PhysicsWallah OTT • Episodes 2–5 • ",
+      text: "An original sci-fi series for the PhysicsWallah OTT app.",
+    },
+    {
+      kicker: "Based in",
+      title: "Delhi · 2026",
+      ring: "AI Filmmaker • Delhi • 2026 • ",
+      text: "Available for projects.",
+    },
+  ],
+};

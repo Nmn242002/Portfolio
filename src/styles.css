@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "locomotive-scroll/dist/locomotive-scroll.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -17,8 +18,26 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
-  --font-display: "Kanit", system-ui, sans-serif;
-  --font-sans: "Kanit", system-ui, sans-serif;
+  --font-display: "Bebas Neue", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-reel: "Bebas Neue", "Arial Narrow", system-ui, sans-serif;
+  --font-micro: "Inter", system-ui, sans-serif;
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-red: var(--red);
+  --color-red-deep: var(--red-deep);
+  --color-mute-dark: var(--mute-dark);
+  --color-mute-light: var(--mute-light);
+  --color-line-dark: var(--line-dark);
+  --color-line-light: var(--line-light);
+  --color-canvas: var(--canvas);
+  --color-cream: var(--cream);
+  --color-paper-ink: var(--paper-ink);
+  --color-paper-line: var(--paper-line);
+  --color-film-line: var(--film-line);
+  --color-cinema: var(--cinema-red);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-film: var(--film);
@@ -46,13 +65,11 @@
 
 :root {
   --radius: 0.625rem;
-  /* #0C0C0C */
-  --background: oklch(0.146 0 0);
-  /* #D7E2EA */
-  --foreground: oklch(0.902 0.014 236.5);
-  --film: oklch(0.902 0.014 236.5);
+  --background: #0b0b0c;
+  --foreground: #ffffff;
+  --film: #ffffff;
   --film-dim: oklch(0.63 0.014 250);
-  --ink: oklch(0.146 0 0);
+  --ink: #0b0b0c;
   --card: oklch(0.185 0 0);
   --card-foreground: oklch(0.902 0.014 236.5);
   --popover: oklch(0.185 0 0);
@@ -62,12 +79,12 @@
   --secondary: oklch(0.22 0 0);
   --secondary-foreground: oklch(0.902 0.014 236.5);
   --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.63 0.014 250);
-  --accent: oklch(0.55 0.24 330);
+  --muted-foreground: #8b8b90;
+  --accent: #d0142c;
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.902 0.014 236.5 / 18%);
+  --border: #ffffff1f;
   --input: oklch(0.902 0.014 236.5 / 18%);
   --ring: oklch(0.902 0.014 236.5 / 40%);
 
@@ -75,6 +92,273 @@
   --gradient-contact: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
   --shadow-contact: 0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721b1 inset;
   --shadow-glow: 0 30px 120px -30px rgba(118, 33, 176, 0.45);
+
+  /* Cine Daily tokens (see DESIGN.md). */
+  --night: #0b0b0c;
+  --night-2: #18181a;
+  --paper: #ffffff;
+  --paper-2: #f4f3f1;
+  --red: #d0142c;
+  --red-deep: #8e0a1c;
+  --mute-dark: #8b8b90;
+  --mute-light: #6e6e73;
+  --line-dark: #ffffff1f;
+  --line-light: #0b0b0c1a;
+
+  /* Showreel and project-page aliases onto the Cine Daily palette. */
+  --canvas: var(--night);
+  --cream: var(--paper-2);
+  --paper-ink: var(--ink);
+  --paper-line: #0b0b0c33;
+  --film-line: #ffffff40;
+  --cinema-red: var(--red);
+  --ticket-notch: 7px;
+}
+
+/* Condensed uppercase display type. */
+@utility reel-title {
+  font-family: var(--font-reel);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 0.86;
+}
+
+/* Tiny tracked caps label set above every value. */
+@utility micro {
+  font-family: var(--font-micro);
+  font-weight: 500;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  line-height: 1.2;
+}
+
+/* Faint guide ring + cross-hair behind a section, as in the reference. */
+@utility guides {
+  background-image:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 0 34%,
+      var(--guide) 34% calc(34% + 1px),
+      transparent calc(34% + 1px)
+    ),
+    linear-gradient(var(--guide), var(--guide)), linear-gradient(var(--guide), var(--guide));
+  background-size:
+    100% 100%,
+    1px 100%,
+    100% 1px;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
+}
+
+/* Old film strip on near-black stock. Each frame is one still with four sprocket holes
+   above and below, as on 35mm; the roll moves one full set of frames per loop. */
+.film-strip {
+  background-color: #0d0d0e;
+  box-shadow:
+    inset 0 1px 0 #3a3a3e,
+    inset 0 -1px 0 #3a3a3e,
+    0 0 0 1px #000;
+  animation: film-flicker 3.2s steps(1, end) infinite;
+}
+.film-frame {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2756%27%20height%3D%2744%27%20viewBox%3D%270%200%2056%2044%27%3E%3Crect%20x%3D%273%27%20y%3D%273%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%273%27%20y%3D%2736%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2717%27%20y%3D%273%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2717%27%20y%3D%2736%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2731%27%20y%3D%273%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2731%27%20y%3D%2736%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2745%27%20y%3D%273%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Crect%20x%3D%2745%27%20y%3D%2736%27%20width%3D%278%27%20height%3D%275%27%20rx%3D%271.2%27%20fill%3D%27%23e9e6df%27%20fill-opacity%3D%27.82%27%2F%3E%3Cpath%20d%3D%27M0.3%2010V34%27%20stroke%3D%27%23000%27%20stroke-width%3D%27.6%27%2F%3E%3C%2Fsvg%3E");
+  background-size: 56px 44px;
+}
+.film-frame img {
+  filter: sepia(0.22) saturate(0.9) contrast(1.06);
+}
+@keyframes film-roll {
+  to {
+    transform: translateX(-20%);
+  }
+}
+.film-roll {
+  animation: film-roll 16s linear infinite;
+}
+/* The faint brightness jitter of a projected print. */
+@keyframes film-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  31% {
+    opacity: 0.93;
+  }
+  33% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 0.96;
+  }
+  74% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+/* About intro: words and chips rise in one by one once the paragraph is in view
+   ([data-shown]), staggered by --i. Hover tilt on chips uses rotate/scale, so it never
+   waits on the reveal delay. */
+.intro-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em) rotate(3deg);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 35ms);
+}
+p.intro-word {
+  display: block;
+}
+.intro-chip {
+  opacity: 0;
+  transform: scale(0.2) rotate(-25deg);
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.7s cubic-bezier(0.3, 1.6, 0.5, 1),
+    rotate 0.3s ease-out,
+    scale 0.3s ease-out,
+    background-color 0.3s ease-out;
+  transition-delay: calc(var(--i, 0) * 35ms), calc(var(--i, 0) * 35ms), 0s, 0s, 0s;
+}
+.intro[data-shown] .intro-word,
+.intro[data-shown] .intro-chip {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-word,
+  .intro-chip {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Bouncing equalizer bars (the mic chip in the About intro). */
+@keyframes eq-bar {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+.eq-bar {
+  height: 30%;
+  animation: eq-bar 0.9s ease-in-out infinite;
+}
+
+/* Ticket stub: four scooped corners cut with masks, so it works on any background. */
+@utility ticket {
+  --n: var(--ticket-notch);
+  -webkit-mask:
+    radial-gradient(circle var(--n) at 0 0, #0000 98%, #000) top left,
+    radial-gradient(circle var(--n) at 100% 0, #0000 98%, #000) top right,
+    radial-gradient(circle var(--n) at 0 100%, #0000 98%, #000) bottom left,
+    radial-gradient(circle var(--n) at 100% 100%, #0000 98%, #000) bottom right;
+  -webkit-mask-size: 51% 51%;
+  -webkit-mask-repeat: no-repeat;
+  mask:
+    radial-gradient(circle var(--n) at 0 0, #0000 98%, #000) top left,
+    radial-gradient(circle var(--n) at 100% 0, #0000 98%, #000) top right,
+    radial-gradient(circle var(--n) at 0 100%, #0000 98%, #000) bottom left,
+    radial-gradient(circle var(--n) at 100% 100%, #0000 98%, #000) bottom right;
+  mask-size: 51% 51%;
+  mask-repeat: no-repeat;
+}
+
+/*
+ * Sliced-title glitch: two clipped copies of the text shift sideways for a moment.
+ * Triggered by a `data-glitch` attribute toggled from script, and on hover.
+ */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch::before {
+  clip-path: inset(0 0 50% 0);
+}
+.glitch::after {
+  clip-path: inset(50% 0 0 0);
+}
+.glitch[data-glitch="on"],
+.glitch-host:hover .glitch {
+  -webkit-text-fill-color: transparent;
+}
+.glitch[data-glitch="on"]::before,
+.glitch[data-glitch="on"]::after,
+.glitch-host:hover .glitch::before,
+.glitch-host:hover .glitch::after {
+  -webkit-text-fill-color: currentcolor;
+}
+.glitch[data-glitch="on"]::before,
+.glitch-host:hover .glitch::before {
+  animation: glitch-top 0.55s steps(2, end) both;
+}
+.glitch[data-glitch="on"]::after,
+.glitch-host:hover .glitch::after {
+  animation: glitch-bottom 0.55s steps(2, end) both;
+}
+@keyframes glitch-top {
+  0% {
+    opacity: 1;
+    transform: translateX(-0.12em);
+  }
+  35% {
+    transform: translateX(0.08em);
+  }
+  70% {
+    transform: translateX(-0.03em);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes glitch-bottom {
+  0% {
+    opacity: 1;
+    transform: translate(0.1em, 0.06em) scaleY(-1);
+  }
+  35% {
+    transform: translateX(-0.07em) scaleY(1);
+  }
+  70% {
+    transform: translateX(0.03em);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Native drag strips without visible scrollbars. */
+.strip {
+  scrollbar-width: none;
+}
+.strip::-webkit-scrollbar {
+  display: none;
 }
 
 .dark {
@@ -121,13 +405,13 @@
     padding: 0;
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--color-film);
-    color: var(--color-ink);
+    background: var(--red);
+    color: #fff;
   }
 }
 
