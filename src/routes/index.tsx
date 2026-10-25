@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Hero } from "@/components/portfolio/Hero";
+import { FilmCursor } from "@/components/portfolio/film";
+import { Showreel } from "@/components/portfolio/Showreel";
 import { VisualReel } from "@/components/portfolio/VisualReel";
 import { About } from "@/components/portfolio/About";
 import { Experience } from "@/components/portfolio/Experience";
@@ -31,7 +33,9 @@ function Index() {
   useScrollHoverGuard();
   return (
     <main className="min-h-screen bg-background" style={{ overflowX: "clip" }}>
+      <FilmCursor />
       <Hero />
+      <Showreel />
       <VisualReel />
       <About />
       <Experience />

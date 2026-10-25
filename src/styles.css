@@ -19,6 +19,14 @@
   --radius-4xl: calc(var(--radius) + 16px);
   --font-display: "Kanit", system-ui, sans-serif;
   --font-sans: "Kanit", system-ui, sans-serif;
+  --font-reel: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-micro: "EB Garamond", Georgia, serif;
+  --color-canvas: var(--canvas);
+  --color-cream: var(--cream);
+  --color-paper-ink: var(--paper-ink);
+  --color-paper-line: var(--paper-line);
+  --color-film-line: var(--film-line);
+  --color-cinema: var(--cinema-red);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-film: var(--film);
@@ -75,6 +83,135 @@
   --gradient-contact: linear-gradient(123deg, #18011f 7%, #b600a8 37%, #7621b0 72%, #be4c00 100%);
   --shadow-contact: 0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721b1 inset;
   --shadow-glow: 0 30px 120px -30px rgba(118, 33, 176, 0.45);
+
+  /* Film-foundation tokens (see DESIGN.md) for the showreel, work tickets and project pages. */
+  --canvas: #000000;
+  --cream: #f2efe7;
+  --paper-ink: #0a0a0a;
+  --paper-line: #0a0a0a33;
+  --film-line: #ffffff40;
+  --cinema-red: #e3120b;
+  --ticket-notch: 7px;
+}
+
+/* Condensed uppercase display type for titles over footage and on paper. */
+@utility reel-title {
+  font-family: var(--font-reel);
+  font-stretch: 75%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
+/* Tiny letterspaced serif label set above every value. */
+@utility micro {
+  font-family: var(--font-micro);
+  font-weight: 500;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  line-height: 1.2;
+}
+
+/* Ticket stub: four scooped corners cut with masks, so it works on any background. */
+@utility ticket {
+  --n: var(--ticket-notch);
+  -webkit-mask:
+    radial-gradient(circle var(--n) at 0 0, #0000 98%, #000) top left,
+    radial-gradient(circle var(--n) at 100% 0, #0000 98%, #000) top right,
+    radial-gradient(circle var(--n) at 0 100%, #0000 98%, #000) bottom left,
+    radial-gradient(circle var(--n) at 100% 100%, #0000 98%, #000) bottom right;
+  -webkit-mask-size: 51% 51%;
+  -webkit-mask-repeat: no-repeat;
+  mask:
+    radial-gradient(circle var(--n) at 0 0, #0000 98%, #000) top left,
+    radial-gradient(circle var(--n) at 100% 0, #0000 98%, #000) top right,
+    radial-gradient(circle var(--n) at 0 100%, #0000 98%, #000) bottom left,
+    radial-gradient(circle var(--n) at 100% 100%, #0000 98%, #000) bottom right;
+  mask-size: 51% 51%;
+  mask-repeat: no-repeat;
+}
+
+/*
+ * Sliced-title glitch: two clipped copies of the text shift sideways for a moment.
+ * Triggered by a `data-glitch` attribute toggled from script, and on hover.
+ */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch::before {
+  clip-path: inset(0 0 50% 0);
+}
+.glitch::after {
+  clip-path: inset(50% 0 0 0);
+}
+.glitch[data-glitch="on"],
+.glitch-host:hover .glitch {
+  -webkit-text-fill-color: transparent;
+}
+.glitch[data-glitch="on"]::before,
+.glitch[data-glitch="on"]::after,
+.glitch-host:hover .glitch::before,
+.glitch-host:hover .glitch::after {
+  -webkit-text-fill-color: currentcolor;
+}
+.glitch[data-glitch="on"]::before,
+.glitch-host:hover .glitch::before {
+  animation: glitch-top 0.55s steps(2, end) both;
+}
+.glitch[data-glitch="on"]::after,
+.glitch-host:hover .glitch::after {
+  animation: glitch-bottom 0.55s steps(2, end) both;
+}
+@keyframes glitch-top {
+  0% {
+    opacity: 1;
+    transform: translateX(-0.12em);
+  }
+  35% {
+    transform: translateX(0.08em);
+  }
+  70% {
+    transform: translateX(-0.03em);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes glitch-bottom {
+  0% {
+    opacity: 1;
+    transform: translate(0.1em, 0.06em) scaleY(-1);
+  }
+  35% {
+    transform: translateX(-0.07em) scaleY(1);
+  }
+  70% {
+    transform: translateX(0.03em);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Native drag strips without visible scrollbars. */
+.strip {
+  scrollbar-width: none;
+}
+.strip::-webkit-scrollbar {
+  display: none;
 }
 
 .dark {

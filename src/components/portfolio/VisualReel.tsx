@@ -1,24 +1,20 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { Pill } from "./film";
 import { FadeIn } from "./primitives";
 import { reelRowOne, reelRowTwo, type ReelImage } from "./data";
 import { autoplayDelta, loopPosition, reelDirections } from "./reel-loop";
 
 export function VisualReel() {
   return (
-    <section id="reel" className="overflow-x-clip bg-background pb-10 pt-16 md:pt-24">
-      <div className="px-5 sm:px-8 md:px-10">
-        <FadeIn>
-          <h2 className="hero-heading text-5xl font-black uppercase leading-none sm:text-7xl md:text-8xl">
-            Visual Reel
-          </h2>
-          <p className="mt-4 text-sm font-light uppercase text-muted-foreground">
-            Frames from my projects.
-          </p>
-        </FadeIn>
-      </div>
-      <div className="mt-10 space-y-4">
+    <section id="frames" className="overflow-x-clip bg-canvas pb-16 pt-10 text-white md:pb-24">
+      <FadeIn className="flex flex-col items-center gap-3 px-5 text-center">
+        <h2>
+          <Pill>Gallery</Pill>
+        </h2>
+        <p className="micro text-white/60">Frames from my projects</p>
+      </FadeIn>
+      <div className="mt-10 space-y-3 md:space-y-4">
         <ReelRow images={reelRowOne} direction={reelDirections.upper} label="Upper reel" />
         {reelRowTwo.length > 0 && (
           <ReelRow images={reelRowTwo} direction={reelDirections.lower} label="Lower reel" />
@@ -125,25 +121,24 @@ function ReelRow({
 
   return (
     <div role="group" aria-label={label}>
-      <div className="mb-3 flex justify-end gap-2 px-5 md:px-10">
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label={`${label}: previous frame`}
-          title="Previous frame"
-          onClick={() => move(-1)}
-        >
-          <ArrowLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label={`${label}: next frame`}
-          title="Next frame"
-          onClick={() => move(1)}
-        >
-          <ArrowRight />
-        </Button>
+      <div className="mb-2 flex justify-end gap-1.5 px-5 md:px-10">
+        {(
+          [
+            [-1, "previous", ArrowLeft],
+            [1, "next", ArrowRight],
+          ] as const
+        ).map(([sign, name, Icon]) => (
+          <button
+            key={name}
+            type="button"
+            aria-label={`${label}: ${name} frame`}
+            title={`${name[0]!.toUpperCase()}${name.slice(1)} frame`}
+            onClick={() => move(sign)}
+            className="flex size-7 cursor-pointer items-center justify-center rounded-full bg-cream text-paper-ink transition-colors duration-300 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cinema"
+          >
+            <Icon className="size-3.5" aria-hidden />
+          </button>
+        ))}
       </div>
       <div
         ref={viewport}
@@ -203,7 +198,7 @@ function ReelRow({
                 draggable={false}
                 width={1792}
                 height={768}
-                className="aspect-[7/3] w-[280px] shrink-0 select-none rounded-lg object-contain sm:w-[340px] lg:w-[calc((100vw-48px)/4)]"
+                className="aspect-[7/3] w-[280px] shrink-0 select-none rounded-[6px] object-cover opacity-55 transition-opacity duration-500 hover:opacity-100 sm:w-[340px] lg:w-[calc((100vw-48px)/4)]"
               />
             )),
           )}

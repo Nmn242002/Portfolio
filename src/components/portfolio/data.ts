@@ -234,6 +234,18 @@ export type Project = {
   }[];
   /** Frame of the scene previews: 2.39:1 cinemascope by default, or 16:9 video. */
   sceneAspect?: "wide" | "video";
+  /** URL segment of the project page, `/work/$slug`. */
+  slug: string;
+  /** Short title for tickets and the stacked showreel cards. */
+  short: string;
+  role: string;
+  format: string;
+  year?: string;
+  cover: string;
+  /** Ruled facts on the project page credits grid. */
+  credits: { label: string; value: string }[];
+  /** Three craft facts in the right column of each showreel card. */
+  highlights: { label: string; value: string }[];
 };
 
 const earth = "/projects/project-earth";
@@ -245,6 +257,25 @@ export const projects: Project[] = [
     title: "Solivus / Project Earth",
     type: "AI Sci-fi OTT Series",
     client: "PhysicsWallah",
+    slug: "project-earth",
+    short: "Project Earth",
+    role: "Writer · Director · Editor",
+    format: "2.39:1",
+    year: "2026",
+    cover: `${earth}/key-art.webp`,
+    credits: [
+      { label: "Script & Dialogue", value: "Naman Jain" },
+      { label: "Characters & Worlds", value: "Naman Jain" },
+      { label: "Sound", value: "Naman Jain" },
+      { label: "Editor · Eps 2–5", value: "Naman Jain" },
+      { label: "Client", value: "PhysicsWallah" },
+      { label: "Platform", value: "PW OTT App" },
+    ],
+    highlights: [
+      { label: "Frame", value: "2.39:1 anamorphic" },
+      { label: "Edit", value: "Locked camera, hard cuts" },
+      { label: "Dialogue", value: "Hindi & Hinglish" },
+    ],
     href: "https://drive.google.com/drive/folders/15q7G40GI8OFfCkTVKiDRQSXakhVzP5Yi?usp=sharing",
     scenes: [
       {
@@ -298,6 +329,22 @@ export const projects: Project[] = [
     title: "Counting with Characters",
     type: "3D Animated Videos for Young Kids",
     client: "PhysicsWallah",
+    slug: "counting-with-characters",
+    short: "Counting with Characters",
+    role: "Producer",
+    format: "16:9",
+    cover: `${counting}/beach-trip.jpg`,
+    credits: [
+      { label: "Producer", value: "Naman Jain" },
+      { label: "Visuals & Sound", value: "Naman Jain" },
+      { label: "Client", value: "PhysicsWallah" },
+      { label: "Audience", value: "Early Grades" },
+    ],
+    highlights: [
+      { label: "Look", value: "Pixar-style 3D" },
+      { label: "Lesson", value: "Counting for early grades" },
+      { label: "Sound", value: "Child-friendly voiceover" },
+    ],
     href: "https://drive.google.com/drive/folders/1ZDPnCUJ4QtVx6mR0XJ8r1YWgo16SGNEs?usp=sharing",
     sceneAspect: "video",
     // All five parts are cuts of one 5-minute video; `start` is the shot change where each begins.
@@ -327,5 +374,13 @@ export const projects: Project[] = [
 
 export const contactLinks = [
   { label: "Email", value: "filmmakernaman@gmail.com", href: "mailto:filmmakernaman@gmail.com" },
+  { label: "WhatsApp", value: "+91 92113 77027", href: "https://wa.me/919211377027" },
   { label: "Location", value: "Delhi, India", href: "" },
 ];
+
+export type Scene = NonNullable<Project["scenes"]>[number];
+
+/** Every scene in project order: the cards of the stacked showreel. */
+export const showreel = projects.flatMap((project) =>
+  (project.scenes ?? []).map((scene) => ({ project, scene })),
+);
